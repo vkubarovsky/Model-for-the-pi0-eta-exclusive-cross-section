@@ -1,0 +1,235 @@
+MACRO FITXS  DAT=pi0 MC=NO
+*
+*================================================================*
+*
+SET HCOL 1
+VE/DEL *
+EXEC HDELET  1234
+VE/CREATE ZZ(100) R
+VE/CREATE PAR(10) R
+VE/CREATE SPAR(10)
+VE/CREATE P(10) R
+
+IF [MC]='NO' THEN
+  VE/READ QV,XV,TV,AG,XS,SXS,sx2 [DAT]_xs.dat
+ELSE
+  VE/READ QV,XV,TV,AG,XS,SXS,sx2 [DAT]mc_xs.dat
+ENDIF
+
+call fitxs.f(1.)
+
+*****  IF  *****
+IF [DAT]='pi0' THEN
+*
+*-------       PI0      ------------
+*
+  VE/CREATE AMAS(1) R 0.135
+  VE/CREATE MAXIND(1) I 1867 
+
+************ 1/W^n     CHISQUARE = 0.2203E+01  NPFIT =  1867 
+*  VE/INPUT P(1:5)   17.7529     0.2330     0.8786     0.0000    0.08667    
+*  VE/INPUT P(6:10)  44.9693     0.8854     0.9411     0.0000    0.00031
+******************
+
+********* x^n*(1-x)^m  CHISQUARE = 0.2246E+01  NPFIT =  1867 FCN=   4180.562
+
+  VE/INPUT P(1:5)  8.1789     0.95906     2.3037     0.0000     0.0000    
+  VE/INPUT P(6:10) 85.571      3.7877     2.9036     0.0000     0.0000    
+
+  VE/INPUT P(1:5)   8.1811     1.9187     2.3035     0.0000     0.0000    
+  VE/INPUT P(6:10) 85.5935     7.5775     2.9052     0.0000     0.0000 
+
+
+  NP=$VDIM(QV)
+  1DHIS 1234 'XS' [NP] 0.5 $EVAL([NP]+0.5)
+  MAX1234=120
+ELSE
+*
+*---------       ETA       ----------
+*
+  VE/CREATE AMAS(1) R 0.540
+  VE/CREATE MAXIND(1) I 1245 
+
+********   1/W^n CHISQUARE = 0.1416E+01  NPFIT =  1245
+*  VE/INPUT p(1:5)  17.0104     0.2113     1.1993     0.0000    0.0002
+*  VE/INPUT P(6:10) 35.8320     0.6480     1.3904     0.0000    0.0011
+******************
+
+********   x^n*(1-x)^m CHISQUARE = 0.1363E+01  NPFIT =  1245  FCN=   1689.069
+
+  VE/INPUT P(1:5)   5.0815     1.3246     0.7708   0.0000     0.0000 
+  VE/INPUT P(6:10) 28.0955     1.5432     4.7845   0.0000     0.0000 
+
+  VE/INPUT P(1:5)   5.0815     0.23    2.3       0.0000     0.0000 
+  VE/INPUT P(6:10) 28.0955     0.88    2.9       0.0000     0.0000 
+
+  VE/INPUT P(1:5)   5.0832    2.6511    0.7700    0.0000    0.0000
+  VE/INPUT P(6:10) 28.1044    3.0840    4.7904    0.0000    0.0000
+
+*  SIGMA XS=XS/(2.*3.14159)
+*  SIGMA SXS=SXS/(2.*3.14159)
+*  SIGMA SX2=SX2/(2.*3.14159)
+  NP=$VDIM(QV)
+  1DHIS 1234 'XS' [NP] 0.5 $EVAL([NP]+0.5)
+  MAX1234=60
+ENDIF
+*****  END IF  *****
+
+MAX 1234 [MAX1234]
+SIGMA AV=AG/180.0*3.14159
+
+Application COMIS Quit
+       SUBROUTINE PRINTFIT
+* NPFITS  Number of points used in the fit
+* NFPAR   Number of free parameters
+* FITCHI  Chisquare
+* FITPAR  Values of parameters
+* FITSIG  Errors on parameters
+       COMMON/HCFITS/NCFITS,NPFITS,NFPAR,FITCHI,FITPAR(35),FITSIG(35)
+     +             ,FITDER(35)
+       VECTOR PAR(35)
+       VECTOR SPAR(35)
+       DO I=1,10
+         PAR(I)=FITPAR(I)
+         SPAR(I)=FITSIG(I)
+       ENDDO
+       END
+ Quit
+*
+*================================================================*
+*
+
+
+mess 1DHIS 1234 'XS' [NP] 0.5 $EVAL([NP]+0.5)
+ve/print amas
+ve/print maxind
+*wait 
+
+PUT_VEC/CON  1234   XS
+PUT_VEC/ERRO 1234  SXS
+
+
+*---------------------------------------------------------------
+APPLICATION HMINUIT END
+NAME 1 HT_NORM
+NAME 2 HT_SLOPE
+NAME 3 HT_Q2_POWER
+NAME 4 HT_XN1_POWER
+NAME 5 HT_XN2_POWER
+
+NAME 6  ET_NORM
+NAME 7  ET_SLOPE
+NAME 8  ET_Q2_POWER
+NAME 9  ET_XN1_POWER
+NAME 10 ET_XN2_POWER
+SET PRI 2
+
+fix    4 5     9 10  
+SIM
+mini
+END
+*----------------------------------------------------------------
+*wait
+ZONE
+     HI/FIT 1234 fitxs.f M 10 P
+MESS HI/FIT 1234 fitxs.f M 10 P
+CALL PRINTFIT
+VE/WRITE PAR  ! 10F10.4
+VE/WRITE SPAR ! 10F10.4
+EXEC OPEN_PS [DAT]_xs_1.ps
+HI/PLOT 1234
+EXEC CLOSE_PS
+
+wait
+EXEC CHECK DATA=[DAT]
+
+return
+*--------------------------------------------------------------*
+
+MACRO CHECK DATA=pi0
+EXEC HDELET 101;
+EXEC HDELET 102;
+exe vecdel zz
+ve/create zz(100)
+*
+
+EXEC OPEN_PS [DATA]_xs_2.ps
+OPT GRID
+ZONE 2 3
+
+IF [DATA]='pi0' THEN
+  VE/READ q2,xb,tt,st,sst,s2st,slt,sslt,s2lt,stt,sstt,s2tt pi0_sf.dat
+*  VE/INPUT P(1:5)  17.1  0.238  0.396  0.0  0.634
+*  VE/INPUT P(6:10) 97.8  0.872  0.871  0.0  1.210
+*  call putpar
+  EXE FIGURE XB=0.131 Q2=1.15 n=1 m=7      MINY=-400 MAXY=400
+  EXE FIGURE XB=0.187 Q2=1.61 N=16 M=23    MINY=-400 MAXY=400
+  EXE FIGURE XB=0.223 Q2=1.75 N=24 M=31    MINY=-400 MAXY=400
+  EXE FIGURE XB=0.276 Q2=2.21 N=51 M=58    MINY=-400 MAXY=400
+  EXE FIGURE XB=0.343 Q2=2.71 N=71 M=77    MINY=-400 MAXY=400
+  EXE FIGURE XB=0.43 Q2=3.22 N=84 M=88     MINY=-400 MAXY=400
+ELSE
+  VE/READ q2,xb,tt,st,sst,s2st,slt,sslt,s2lt,stt,sstt,s2tt eta_sf.dat
+*  VE/INPUT p(1:5)  13.284  0.226  0.4239   0.0  0.56237 
+*  VE/INPUT P(6:10) 182.54  0.639  1.8635  0.0  1.6719
+*  call putpar
+  EXE FIGURE XB=0.134 Q2=1.17 n=1 m=7     MINY=-100 MAXY=200
+  EXE FIGURE XB=0.187 Q2=1.62 N=15 M=19   MINY=-100 MAXY=200
+  EXE FIGURE XB=0.224 Q2=1.77 N=20 M=26   MINY=-100 MAXY=200
+  EXE FIGURE XB=0.276 Q2=2.24 N=35 M=40   MINY=-100 MAXY=200
+  EXE FIGURE XB=0.430 Q2=3.25 N=60 M=63   MINY=-100 MAXY=200
+  EXE FIGURE XB=0.377 Q2=3.77 N=66 M=68   MINY=-100 MAXY=200
+ENDIF  
+
+EXEC CLOSE_PS
+RETURN
+
+*--------------------------------------------------------------*
+
+MACRO FIGURE XB=0.13 Q2=1.15 n=1 m=7  k=7   MINY=-400 MAXY=400
+EXEC HDELET 101; EXEC HDELET 102
+K=[M]-[N]+1
+NULL 0 2.0 [MINY] [MAXY]; HLINE 0
+SET FCOL 2; FUN1 101 XSIGMA_T(-X,[XB],[Q2],5.75) 100 0 2.0 S
+SET FCOL 4; FUN1 102 XSIGMA_TT(-X,[XB],[Q2],5.75) 100 0 2.0 S
+SET PMCI 2; HPLOT/ERRORS tt([n]:[m]) st([n]:[m]) zz([n]:[m]) sst([n]:[m])   [k]   20 0.1 s
+SET PMCI 4; HPLOT/ERRORS tt([n]:[m]) stt([n]:[m]) zz([n]:[m]) sstt([n]:[m]) [k]   20 0.1 s
+TEXT 1 300 Q2=[Q2] 0.4
+TEXT 1 200 xB=[XB] 0.4
+ATITLE -t,GeV^2
+RETURN
+
+*--------------------------------------------------------------*
+
+MACRO HT T=0.2 XB=0.27 Q2=2.2 N=51 M=58 
+E=5.75
+K=[M]-[N]+1
+DO I=1,4
+  EXE VECDEL X[I]; EXE VECDEL Y[I]; EXE VECDEL S[I]
+  VE/CREATE X[I]([K]) R; VE/CREATE Y[I]([K]) R; VE/CREATE S[I]([K]) R
+ENDDO
+DO I=1,[K]
+   X=$EVAL(TT([N]-1+[I]));                         VE/INP X1([I]) [X]
+   IND=[N]-1+[I]; mess ind=[ind]
+   YT=$EVAL(ST([IND]));     YT=$RSIGMA([YT]);      VE/INP Y1([I]) [YT]
+   SYT=$EVAL(SST([IND]));  SYT=$RSIGMA([SYT]);     VE/INP S1([I]) [SYT]
+
+   YTT=$EVAL(STT([IND]));  YTT=$RSIGMA([YTT]);     VE/INP Y2([I]) [YTT]
+   SYTT=$EVAL(SSTT([IND]));  SYTT=$RSIGMA([SYTT]); VE/INP S2([I]) [SYTT]
+   mess [X] [yt] [syt] [ytt] [sytt]
+
+   FUN=HT_T(-[T],[XB],[Q2],[YT],[YTT],[E])
+   HT=$CALL([FUN])
+   VE/INP Y3([I]) [HT]
+
+   FUN=ET_TT(-[T],[XB],[Q2],[YTT],[E])
+   ET=$CALL([FUN])
+   VE/INP Y4([I]) [ET]
+
+
+ENDDO
+
+
+
+
+RETURN

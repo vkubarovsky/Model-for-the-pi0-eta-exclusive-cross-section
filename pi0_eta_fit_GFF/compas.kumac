@@ -1,0 +1,96 @@
+OPT NSTA; OPT NBOX; OPT NDAT; CLOSE 0
+SET PMCI 1
+
+CALL DVMPX_PAW.F(0.135)
+XBA=0.093; Q2A=$RSIGMA(2.0) 
+SH rm -f compas_kine_s_tt.ps
+
+EXE OPEN_PS compas_kine_s_tt.ps
+ZONE; NULL 0 0.64 0 35 A
+SET fcol 4; 
+FUN1 111   xsigma_t(-x,[XBA],[Q2A],160.) 1000 0.009 0.64 S
+EXE CLOSE_PS
+
+WAIT
+
+CALL PUTPAR
+CALL SIGMA_T_TT.F(-0.2,0.2,2.,160.0)
+CALL fitphi.f(0.1)
+CALL fitphi3.f(0.1)
+
+VE/CR XSCOM(5)  R 16.3 16.2 11.5 3.4 1.5
+VE/CR SXSCOM(5) R  3.6 3.8 2.6 1.4 1.0
+VE/CR TC(5)     R  0.12 0.18 0.28 0.43 0.57
+
+
+Q2A=$RSIGMA(2.0)
+XBA=0.093
+TAV=0.256
+NUA=12.8
+
+TITLE ' '
+VE/CREATE XBV(4) R .07 .08 .09 .093
+exe open_ps compas_Q2_2.ps
+ZONE 2 2
+DO I=1,4
+XBA=$EVAL(XBV([I]))
+NULL 0 0.6 0 40
+set fcol 4; fun1 111   xsigma_t(-x,[XBA],[Q2A],160.) 1000 0 0.6 S
+**set fcol 4; fun1 111 -xsigma_tt(-x,[XBA],[Q2A],160.) 1000 0 0.6 S
+**set fcol 2; fun1 111 sigma_t_tt(-x,[XBA],[Q2A],160.) 1000 0 0.6 S
+
+HPLOT/ERR TC XSCOM ZZ SXSCOM 5 20 0.2
+NULL 0 1 0 1 SA
+TEXT 0.5 0.9 XB=[XBA] 0.3
+TEXT 0.5 0.8 Q2=[Q2A] 0.4
+ENDDO
+exe close_ps
+WAIT
+
+
+exe open_ps compas_xB_0.093.ps
+XBA=0.093
+VE/CREATE Q2V(4) R 2.0 2.1 2.2 2.3 
+DO I=1,4
+Q2=$EVAL(Q2V([I]))
+Q2A=$RSIGMA([Q2])
+NULL 0 0.6 0 40
+set fcol 4; fun1 111   xsigma_t(-x,[XBA],[Q2A],160.) 1000 0 0.6 S
+**set fcol 4; fun1 111 -xsigma_tt(-x,[XBA],[Q2A],160.) 1000 0 0.6 S
+**set fcol 2; fun1 111 sigma_t_tt(-x,[XBA],[Q2A],160.) 1000 0 0.6 S
+
+HPLOT/ERR TC XSCOM ZZ SXSCOM 5 20 0.2
+NULL 0 1 0 1 SA
+TEXT 0.5 0.9 XB=[XBA] 0.3
+TEXT 0.5 0.8 Q2=[Q2A] 0.4
+ENDDO
+exe close_ps
+WAIT
+
+*==========================================================*
+
+XBA=0.093
+Q2A=$RSIGMA(2.0)
+ZONE 2 2
+NULL 0 0.6 0 40
+set fcol 4; fun1 111   xsigma_t(-x,[XBA],[Q2A],160.) 1000 0 0.6 S
+set fcol 4; fun1 111 -xsigma_tt(-x,[XBA],[Q2A],160.) 1000 0 0.6 S
+set fcol 2; fun1 111 sigma_t_tt(-x,[XBA],[Q2A],160.) 1000 0 0.6 S
+
+HPLOT/ERR TC XSCOM ZZ SXSCOM 5 20 0.2
+
+
+SET FCOL 2
+VE/CR XSPHI(8)  R 0.4 2.1 2.1 1 1.2 1.9 1.5 0.1
+VE/CR SXSPHI(8) R .4 .7 .5 .4 .5 .5 .5 .2
+VE/CR PHI(8)    R -2.8 -2. -1.2 -.4 .4 1.2 2.0 2.8
+
+VE/CREATE PARPHI(3) R 1.2 -1 0
+NULL -3.14 3.14 -0. 3.0
+HPLOT/ERR PHI XSPHI ZZ SXSPHI 8 20 0.2
+VE/FIT    PHI XSPHI    SXSPHI FITPHI S 2 PARPHI
+
+NULL -3.14 3.14 -0. 3.0
+HPLOT/ERR PHI XSPHI ZZ SXSPHI 8 20 0.2
+VE/FIT    PHI XSPHI    SXSPHI FITPHI3 S 3 PARPHI
+

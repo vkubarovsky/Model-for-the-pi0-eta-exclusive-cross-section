@@ -1,0 +1,69 @@
+MACRO COMPASS_W
+
+VE/DEL *; CLOSE 0; HI/DEL 0
+
+
+Application COMIS Quit
+      REAL FUNCTION W(Q2,NU)
+      REAL Q2, NU
+      REAL MP
+
+      MP=0.938272
+      W=0
+      
+      W2=-Q2+2*NU*MP+MP**2
+      IF(W2.GT.0.) THEN
+           W=SQRT(W2)
+      ENDIF
+      
+      RETURN
+      END
+C---
+      REAL FUNCTION WX(Q2,X)
+      REAL Q2, NU, X
+      REAL MP
+
+      MP=0.938272
+      WX=0
+      NU=Q2/(2*MP*X)
+      W2=-Q2+2*NU*MP+MP**2
+      IF(W2.GT.0.) THEN
+           WX=SQRT(W2)
+      ENDIF
+      
+      RETURN
+      END
+C---
+      REAL FUNCTION XB(Q2,NU)
+      REAL Q2, NU
+      REAL MP
+
+      MP=0.938272
+      XB=Q2/(2*MP*NU)
+      
+      RETURN
+      END
+Quit
+
+TITLE W
+NULL 0 30 0 8; ATITLE [n] W
+SET FCOL 2; Q2=$RSIGMA(1.00); fun1 101 W([Q2],X) 1000  8.5  11.45 s 
+SET FCOL 4; Q2=$RSIGMA(1.50); fun1 102 W([Q2],X) 1000  8.5  11.45 s
+SET FCOL 2; Q2=$RSIGMA(1.50); fun1 103 W([Q2],X) 1000 11.45 15.43 s 
+SET FCOL 4; Q2=$RSIGMA(2.24); fun1 104 W([Q2],X) 1000 11.45 15.43 s 
+SET FCOL 2; Q2=$RSIGMA(2.24); fun1 105 W([Q2],X) 1000 15.43 20.78 s
+SET FCOL 4; Q2=$RSIGMA(3.34); fun1 106 W([Q2],X) 1000 15.43 20.78 s
+SET FCOL 2; Q2=$RSIGMA(3.34); fun1 107 W([Q2],X) 1000 20.78 28.00 s
+SET FCOL 4; Q2=$RSIGMA(5.00); fun1 108 W([Q2],X) 1000 20.78 28.00 s
+WAIT 
+
+TITLE x?B
+NULL 0 30 0 0.15; ATITLE [n] x?B
+SET FCOL 2; Q2=$RSIGMA(1.00); fun1 201 XB([Q2],X) 1000  8.5  11.45 s 
+SET FCOL 4; Q2=$RSIGMA(1.50); fun1 202 XB([Q2],X) 1000  8.5  11.45 s
+SET FCOL 2; Q2=$RSIGMA(1.50); fun1 203 XB([Q2],X) 1000 11.45 15.43 s 
+SET FCOL 4; Q2=$RSIGMA(2.24); fun1 204 XB([Q2],X) 1000 11.45 15.43 s 
+SET FCOL 2; Q2=$RSIGMA(2.24); fun1 205 XB([Q2],X) 1000 15.43 20.78 s
+SET FCOL 4; Q2=$RSIGMA(3.34); fun1 206 XB([Q2],X) 1000 15.43 20.78 s
+SET FCOL 2; Q2=$RSIGMA(3.34); fun1 207 XB([Q2],X) 1000 20.78 28.00 s
+SET FCOL 4; Q2=$RSIGMA(5.00); fun1 208 XB([Q2],X) 1000 20.78 28.00 s

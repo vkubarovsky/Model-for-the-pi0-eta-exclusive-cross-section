@@ -1,0 +1,21 @@
+      SUBROUTINE DVMP_PAW(MESONMASS)
+      IMPLICIT NONE
+      REAL MESONMASS
+      INTEGER K
+      COMMON/PIETA/K
+      REAL PAR
+      COMMON /PAWPAR/ PAR(12)
+      REAL AM(2)
+      DATA AM/0.134976,0.547300/
+
+      CALL XSINIT(MESONMASS)
+
+      PRINT 100,AM(K),PAR
+ 100  FORMAT('M=',F10.5/ '/PAWPAR/',12F8.3)
+
+C      DVMPX_PAW=0.
+      RETURN
+      END
+
+      INCLUDE '../Functions/dvmpw.F'
+      INCLUDE '../Functions/dvmpx.F'

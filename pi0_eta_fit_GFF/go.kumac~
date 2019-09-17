@@ -1,0 +1,7 @@
+macro go
+ a=0.9
+ rtxt = 'ranlux('//[a]]//)'
+ mess [rtxt]
+ val  = $call([rtxt])
+ mess [val]
+return

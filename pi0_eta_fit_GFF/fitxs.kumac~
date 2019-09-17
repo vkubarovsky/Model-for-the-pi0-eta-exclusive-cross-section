@@ -1,0 +1,563 @@
+MACRO FITXS  DAT=pi0 SYST=yes MC=NO
+*
+*================================================================*
+*
+IF [DAT]=pi0 THEN
+   CALL dvmpx_paw.f(0.135)
+ELSE
+   CALL dvmpx_paw.f(0.540)
+ENDIF
+
+SET HCOL 1
+VE/DEL *; HI/DEL 0; close 0
+OPT LINY
+OPT NSTA
+OPT NGRID
+OPT NDAT
+OPT NBOX
+
+EXEC HDELET  1234
+VE/CREATE ZZ(100) R
+VE/CREATE PAR(10) R
+VE/CREATE SPAR(10)
+VE/CREATE DIM1(1) I
+VE/CREATE DIM2(1) I
+
+VE/CREATE XBI(18) R 
+VE/CREATE Q2I(18) R
+
+VE/CREATE ZZ(100) R
+VE/CREATE PAR(12) R
+VE/CREATE SPAR(12)
+VE/CREATE P(12) R
+
+VE/CREATE Z(100) R
+
+IF [MC]='NO' THEN
+  VE/READ QV,XV,TV,AG,XS,SXS,sx2 [DAT]_xs.dat
+ELSE
+  VE/READ QV,XV,TV,AG,XS,SXS,sx2 [DAT]mc_xs.dat
+ENDIF
+SIGMA AV=AG/180.0*3.14159
+
+IF [DAT]='pi0' THEN
+*
+*-------       PI0      ------------
+*
+  VE/CREATE AMAS(1) R 0.135
+  VE/CREATE MAXIND(1) I 1867 
+  VE/READ q2,xb,tt,st,sst,s2st,slt,sslt,s2lt,stt,sstt,s2tt pi0_sf.dat
+
+  VE/INPUT P  7.1043 1.5319 -0.9628    1.4306  0.0000 60.1218  2.1097 -0.6038  0.6629  0.0000 0. 0.
+  VE/INPUT P  6.2094 0.8033 -0.1009    1.8058  0.0000 91.2488  3.3810 -1.8945 -0.1047  0.0000 16.9 2.2
+  VE/INPUT P  6.2566 0.8019 -0.1167   1.7396  0.0000 92.8484  3.4077  -1.9039 -0.1046 0.0000 16.8498   2.1802
+  VE/INPUT P  6.2624 0.8032 -0.1152  1.7431  0.0    92.9727  3.4071 -1.9099 -0.1199  0.0 16.8603  2.1722
+  NP=$VDIM(QV)
+  NP2=$VDIM(Q2)
+  1DHIS 1234 'XS' [NP] 0.5 $EVAL([NP]+0.5)
+  MAX1234=120
+
+* Number of tbins in [Q2,xB] matrix  
+  VE/CREATE TBINS(18) I 7 8 8 8 8 4 7 8 7  5  7  4  2  5  1  4  2  1
+* Kinematics with number of points >=3
+  VE/CREATE BINS3(13) I 1 2 3 4 5 6   8 9 10 11 12    14    16  
+
+
+
+  NPP=$VDIM(Q2)
+  NP_1=[NPP]
+  NP_2=$EVAL([NPP]+1)
+  NP_3=$EVAL(2*[NPP])
+  VE/INPUT DIM1(1) [NPP]
+  VE/INPUT DIM2(1) [NP_2]
+
+ELSE
+*
+*---------       ETA       ----------
+*
+  VE/CREATE AMAS(1) R 0.540
+  VE/CREATE MAXIND(1) I 1245 
+  VE/READ q2,xb,tt,st,sst,s2st,slt,sslt,s2lt,stt,sstt,s2tt eta_sf.dat
+
+  VE/INPUT P 5.8046 1.6122 -1.1327  1.2313  0.0000 24.6768  1.4355 -0.1832  0.8759  0.0000 0. 0.
+  VE/INPUT P 6.9236 1.7459 -1.2672  0.7296  0.0000 17.1698  1.1252  0.0293  1.5769  0.0000 1. 1.
+  VE/INPUT P 6.9303 1.7521 -1.2860  0.6884  0.0000 17.1471  1.1304  0.0419  1.6430  0.0000  22.8290   4.1822
+  VE/INPUT P 6.9349 1.7519 -1.2865  0.6862  0.0000 17.1094  1.1288  0.0450  1.6486  0.0000  21.9461   4.0418
+  VE/INPUT P 6.9439 1.7523 -1.2875  0.6822  0.0    17.0423  1.1264  0.0491  1.6594  0.0     21.6379   3.9875
+  
+  NP=$VDIM(QV)
+  NP2=$VDIM(Q2)
+  1DHIS 1234 'XS' [NP] 0.5 $EVAL([NP]+0.5)
+  MAX1234=60
+
+
+* Number of tbins in [Q2,xB] matrix
+  VE/CREATE TBINS(17) I 7 7 5 7 5 1 2 6 6  4  5  4  4 1 1  3 1
+* Kinematics with number of points >=3
+  VE/CREATE BINS3(12)   I 1 2 3 4 5     8 9 10 11 12 13     16 
+
+
+  NPP=$VDIM(Q2)
+  NP_1=[NPP]
+  NP_2=$EVAL([NPP]+1)
+  NP_3=$EVAL(2*[NPP])
+  VE/INPUT DIM1(1) [NPP]
+  VE/INPUT DIM2(1) [NP_2]
+
+ENDIF
+
+mess 1DHIS 1234 'XS' [NP] 0.5 $EVAL([NP]+0.5)
+
+IF [SYST]=yes THEN
+  SIGMA SXS=SQRT(SXS**2+SX2**2)
+  SIGMA SST=SQRT(SST**2+S2ST**2)
+  SIGMA SSLT=SQRT(SSLT**2+S2LT**2)
+  SIGMA SSTT=SQRT(SSTT**2+S2TT**2)
+MES SYSTEMATICS is INCLUDED
+ENDIF
+*-------------    Groups of bins in (Q2,xB]
+
+NTBINS=$VDIM(TBINS)
+NTBINS3=$VDIM(BINS3)
+
+VE/CREATE ITMIN([NTBINS]) I
+VE/CREATE ITMAX([NTBINS]) I
+
+VE/CREATE  ETSLOP([NTBINS]) R
+VE/CREATE SETSLOP([NTBINS]) R
+
+VE/CREATE  HTSLOP([NTBINS]) R
+VE/CREATE SHTSLOP([NTBINS]) R
+
+VE/CREATE  ETNORM([NTBINS]) R
+VE/CREATE SETNORM([NTBINS]) R
+
+VE/CREATE  HTNORM([NTBINS]) R
+VE/CREATE SHTNORM([NTBINS]) R
+
+
+IMIN=1
+DO I=1,[NTBINS]
+  IMAX=$EVAL([IMIN]+TBINS([I])-1)
+  Ve/INP ITMIN([I]) [IMIN]
+  Ve/INP ITMAX([I]) [IMAX]
+*  mess [i] [imin]-[imax] $EVAL(TBINS([I]))
+  VE/INP Q2I([I]) Q2([IMIN])
+  VE/INP XBI([I]) XB([IMIN])
+  IMIN=$EVAL([IMAX]+1)
+ENDDO
+*======================================================
+VE/CREATE _ET2([NP2])
+VE/CREATE _HT2([NP2])
+VE/CREATE _SET2([NP2])
+VE/CREATE _SHT2([NP2])
+VE/CREATE _KET2([NP2])
+VE/CREATE _KHT2([NP2])
+VE/CREATE _HTEBAR([NP2])
+VE/CREATE _SHTEBAR([NP2])
+VE/CREATE _KHET2([NP2])
+*WAIT [NP2]
+DO I=1,[NP2]
+   Q2_=Q2([I])
+   XB_=XB([I])
+   TT_=-TT([I])
+   
+   FET='ET2('//[TT_]//','//[XB_]//','//[Q2_]//')'
+   FHT='HT2('//[TT_]//','//[XB_]//','//[Q2_]//')'
+   FHTEBAR='HTE2('//[TT_]//','//[XB_]//','//[Q2_]//')'
+
+
+   FF=$CALL([FET])
+   VE/INP _KET2([I]) [FF]
+   VE/INP _ET2([I])  $EVAL(STT([I])*_KET2([I]))
+   VE/INP _SET2([I]) $EVAL(SSTT([I])*_KET2([I])*(-1.0))
+*MESS FET=[FET]
+*MESS FHT=[FHT]
+*MESS FF= [FF] $CALL([FET])
+*MESS
+
+*   IF _ET2([I]).LE.0. THEN
+*        VE/INP _ET2([I]) 0.
+*   ENDIF
+
+   FF=$CALL([FHT])
+   VE/INP _KHT2([I]) [FF]
+   VE/INP _HT2([I])  $EVAL((ST([I])+STT([I]))*_KHT2([I]))
+   SGM=$SIGMA(SQRT(SST([I])**2+SSTT([I])**2))
+   VE/INP _SHT2([I]) $EVAL([SGM]*_KHT2([I]))
+*   IF _HT2([I]).LE.0. THEN;  VE/INP _HT2([I]) 0.; ENDIF
+*MESS FF=[FF] $CALL([FHT])
+
+   FF=$CALL([FHTEBAR])
+   VE/INP _KHET2([I]) [FF]
+   VE/INP _HTEBAR([I])  $EVAL(SLT([I])*_KHET2([I]))
+   VE/INP _SHTEBAR([I]) $EVAL(SSLT([I])*_KHET2([I]))
+
+*WAIT    
+ENDDO
+
+*WAIT
+VE/CREATE PSLOP(2) R 1 1 
+
+
+
+PUT_VEC/CON  1234   XS
+PUT_VEC/ERRO 1234  SXS
+MAX 1234 [MAX1234]
+*----------------------------------------
+Application COMIS Quit
+       SUBROUTINE GETFITPAR
+* NPFITS  Number of points used in the fit
+* NFPAR   Number of free parameters
+* FITCHI  Chisquare
+* FITPAR  Values of parameters
+* FITSIG  Errors on parameters
+       COMMON/HCFITS/NCFITS,NPFITS,NFPAR,FITCHI,FITPAR(35),FITSIG(35)
+     +             ,FITDER(35)
+       VECTOR PAR(35)
+       VECTOR SPAR(35)
+       DO I=1,12
+         PAR(I)=FITPAR(I)
+         SPAR(I)=FITSIG(I)
+       ENDDO
+       END
+
+      REAL FUNCTION FITPHI(X)
+      COMMON /PAWPAR/ P(10)
+      FITPHI=P(1)+P(2)*COS(2*X)
+      RETURN
+      END
+
+      REAL FUNCTION FITPHI3(X)
+      COMMON /PAWPAR/ P(10)
+      FITPHI3=P(1)+P(2)*COS(2*X)+p(3)*2*cos(X)
+      RETURN
+      END
+
+      FUNCTION EXP2(X)
+      COMMON /PAWPAR/ P(10)
+      EXP2=P(1)*EXP(-P(2)*X)
+      RETURN
+      END
+
+      FUNCTION Q2N(X)
+      COMMON /PAWPAR/ P(10)
+      Q2N=P(1)*X**(P(2)/2)
+      RETURN
+      END
+
+      FUNCTION SLOPX(X)
+      COMMON /PAWPAR/ P(10)
+      SLOPX=(P(1)-P(2)*ALOG(x))*2.
+      RETURN
+      END       
+ Quit
+*
+*================================================================*
+*
+
+*---------------------------------------------------------------
+APPLICATION HMINUIT END
+NAME 1 HT_NORM
+NAME 2 HT_SLOPE
+NAME 3 HT_SLOPXB
+NAME 4 HT_Q2
+NAME 5 FREE
+
+NAME 6  ET_NORM
+NAME 7  ET_SLOPE
+NAME 8  ET_SLOPXB
+NAME 9  ET_Q2
+NAME 10 FREE
+
+NAME 11 HTEBAR
+NAME 12 HTEBARSL
+
+FIX 5
+FIX 10
+
+SET PRI 0
+
+SIM
+mini
+END
+*----------------------------------------------------------------
+
+ZONE
+     HI/FIT 1234 fitxs.f M 12 P
+MESS HI/FIT 1234 fitxs.f M 12 P
+CALL GETFITPAR
+VE/COPY PAR P1234
+VE/COPY SPAR SP1234
+
+VE/WRITE P1234  ! ('VE/INPUT P  ',12F8.4)
+VE/WRITE SP1234 ! ('VE/INPUT SP ',12F8.4)
+
+TITLE XS
+EXEC OPEN_PS [DAT]_xs.ps
+     HI/PLOT 1234
+EXEC CLOSE_PS
+SH ps2pdf  [DAT]_xs.ps 
+
+wait
+
+EXEC CHECKSF DAT=[DAT]
+WAIT
+
+
+EXE CHECK_FFS DAT=[DAT]
+WAIT
+
+CALL PUTPARCOM
+EXEC CHECKGFF DAT=[DAT]
+WAIT
+
+EXEC HT_ET DAT=[DAT]
+
+
+VE/WRITE P1234  ! ('VE/INPUT P  ',12F8.4)
+VE/WRITE SP1234 ! ('VE/INPUT SP ',12F8.4)
+
+RETURN
+
+*--------------------------------------------------------------*
+
+MACRO CHECKSF DAT=pi0
+ZONE 2 3
+TITLE 'Structure'//' '//'Functions'
+EXEC OPEN_PS [DAT]_check_sf_sf.ps
+IF [DAT]=pi0 THEN
+*  call putpar
+  EXE FIGURE XB=0.131 Q2=1.15 n=1 m=7      MINY=-400 MAXY=400
+  EXE FIGURE XB=0.187 Q2=1.61 N=16 M=23    MINY=-400 MAXY=400
+  EXE FIGURE XB=0.223 Q2=1.75 N=24 M=31    MINY=-400 MAXY=400
+  EXE FIGURE XB=0.276 Q2=2.21 N=51 M=58    MINY=-400 MAXY=400
+  EXE FIGURE XB=0.343 Q2=2.71 N=71 M=77    MINY=-400 MAXY=400
+  EXE FIGURE XB=0.43 Q2=3.22 N=84 M=88     MINY=-400 MAXY=400
+ELSE
+*  call putpar
+  EXE FIGURE XB=0.134 Q2=1.17 n=1 m=7     MINY=-100 MAXY=200
+  EXE FIGURE XB=0.187 Q2=1.62 N=15 M=19   MINY=-100 MAXY=200
+  EXE FIGURE XB=0.224 Q2=1.77 N=20 M=26   MINY=-100 MAXY=200
+  EXE FIGURE XB=0.276 Q2=2.24 N=35 M=40   MINY=-100 MAXY=200
+  EXE FIGURE XB=0.430 Q2=3.25 N=60 M=63   MINY=-100 MAXY=200
+  EXE FIGURE XB=0.377 Q2=3.77 N=66 M=68   MINY=-100 MAXY=200
+ENDIF  
+
+EXEC CLOSE_PS
+SH ps2pdf [DAT]_check_sf_sf.ps
+RETURN
+
+*--------------------------------------------------------------*
+MACRO FIGURE XB=0.13 Q2=1.15 n=1 m=7     MINY=-400 MAXY=400
+EXEC HDELET 101[N]; EXEC HDELET 102[N]
+K=[M]-[N]+1
+NULL 0 2.0 [MINY] [MAXY]; HLINE 0
+FUN='TMINQ('//[Q2]//','//[XB]//')'
+TMI=$CALL([FUN])
+SET FCOL 2; FUN1 101[N]  XSIGMA_T(-X,[XB],[Q2],5.75) 100 [TMI] 2.0 S
+SET FCOL 4; FUN1 102[N]  XSIGMA_TT(-X,[XB],[Q2],5.75) 100 [TMI] 2.0 S
+*SET FCOL 6; FUN1 102[N]  XSIGMA_LT(-X,[XB],[Q2],5.75) 100 [TMI] 2.0 S
+
+SET PMCI 2; HPLOT/ERRORS tt([n]:[m]) st([n]:[m]) zz([n]:[m]) sst([n]:[m])   [k]   20 0.1 s
+SET PMCI 4; HPLOT/ERRORS tt([n]:[m]) stt([n]:[m]) zz([n]:[m]) sstt([n]:[m]) [k]   20 0.1 s
+*SET PMCI 6; HPLOT/ERRORS tt([n]:[m]) slt([n]:[m]) zz([n]:[m]) sslt([n]:[m]) [k]   20 0.1 s
+
+NULL 0 1 0 1 SAB
+TEXT 0.7 0.85 Q2=[Q2] 0.2
+TEXT 0.7 0.70 xB=[XB] 0.2
+ATITLE -t,GeV^2
+
+RETURN
+*--------------------------------------------------------------*
+
+MACRO HT_ET DAT=pi0
+ZONE 2 3
+TITLE 'HT and ET Contributions'
+EXEC OPEN_PS [DAT]_check_ht_et.ps
+IF [DAT]=pi0 THEN
+*  call putpar
+  EXE FIG XB=0.131 Q2=1.15 n=1 m=7      MINY=0 MAXY=400
+  EXE FIG XB=0.187 Q2=1.61 N=16 M=23    MINY=0 MAXY=400
+  EXE FIG XB=0.223 Q2=1.75 N=24 M=31    MINY=0 MAXY=400
+  EXE FIG XB=0.276 Q2=2.21 N=51 M=58    MINY=0 MAXY=400
+  EXE FIG XB=0.343 Q2=2.71 N=71 M=77    MINY=0 MAXY=400
+  EXE FIG XB=0.43 Q2=3.22 N=84 M=88     MINY=0 MAXY=400
+ELSE
+*  call putpar
+  EXE FIG XB=0.134 Q2=1.17 n=1 m=7     MINY=0 MAXY=200
+  EXE FIG XB=0.187 Q2=1.62 N=15 M=19   MINY=0 MAXY=200
+  EXE FIG XB=0.224 Q2=1.77 N=20 M=26   MINY=0 MAXY=200
+  EXE FIG XB=0.276 Q2=2.24 N=35 M=40   MINY=0 MAXY=200
+  EXE FIG XB=0.430 Q2=3.25 N=60 M=63   MINY=0 MAXY=200
+  EXE FIG XB=0.377 Q2=3.77 N=66 M=68   MINY=0 MAXY=200
+ENDIF  
+
+EXEC CLOSE_PS
+SH ps2pdf  [DAT]_check_ht_et.ps
+RETURN
+
+*--------------------------------------------------------------*
+MACRO FIG XB=0.13 Q2=1.15 n=1 m=7     MINY=-400 MAXY=400
+EXEC HDELET 101[N]; EXEC HDELET 102[N]
+K=[M]-[N]+1
+NULL 0 2.0 [MINY] [MAXY]; HLINE 0
+FUN='TMINQ('//[Q2]//','//[XB]//')'
+TMI=$CALL([FUN])
+SET FCOL 2; FUN1 101[N]  XSIGMA_T(-X,[XB],[Q2],5.75) 100 [TMI] 2.0 S
+SET FCOL 4; FUN1 102[N]   XSIGMA_T(-X,[XB],[Q2],5.75)+XSIGMA_TT(-X,[XB],[Q2],5.75) 100 [TMI] 2.0 S
+SET FCOL 6; FUN1 102[N]  -XSIGMA_TT(-X,[XB],[Q2],5.75) 100 [TMI] 2.0 S
+
+SET PMCI 1; HPLOT/ERRORS tt([n]:[m]) st([n]:[m]) zz([n]:[m]) sst([n]:[m])   [k]   20 0.1 s
+*SET PMCI 4; HPLOT/ERRORS tt([n]:[m]) stt([n]:[m]) zz([n]:[m]) sstt([n]:[m]) [k]   20 0.1 s
+*SET PMCI 6; HPLOT/ERRORS tt([n]:[m]) slt([n]:[m]) zz([n]:[m]) sslt([n]:[m]) [k]   20 0.1 s
+
+NULL 0 1 0 1 SAB
+TEXT 0.7 0.85 Q2=[Q2] 0.2
+TEXT 0.7 0.70 xB=[XB] 0.2
+ATITLE -t,GeV^2
+
+RETURN
+
+*-------------------------------------------------------------*
+
+MACRO CHECKGFF DAT=pi0 
+TITLE [DAT]//' Generalized'//' '//'FFs'
+EXEC HDELET 101;
+EXEC HDELET 102;
+exe vecdel zz; ve/create zz(100)
+CLOSE 0
+*
+EXEC OPEN_PS [DAT]_check_gff_sf.ps
+OPT GRID
+ZONE 2 3
+
+IF [dat]=pi0 THEN
+  EXE GFF XB=0.131 Q2=1.15 n=1  m=7     MINY=1 MAXY=100
+  EXE GFF XB=0.187 Q2=1.61 N=16 M=23    MINY=1 MAXY=100
+  EXE GFF XB=0.223 Q2=1.75 N=24 M=31    MINY=1 MAXY=100
+  EXE GFF XB=0.276 Q2=2.21 N=51 M=58    MINY=1 MAXY=100
+  EXE GFF XB=0.343 Q2=2.71 N=71 M=77    MINY=1 MAXY=100
+  EXE GFF XB=0.43 Q2=3.22  N=84 M=88    MINY=1 MAXY=100
+ELSE
+  EXE GFF XB=0.134 Q2=1.17 n=1 m=7   k=7  MINY=-100 MAXY=200
+  EXE GFF XB=0.187 Q2=1.62 N=15 M=19 K=5  MINY=-100 MAXY=200
+  EXE GFF XB=0.224 Q2=1.77 N=20 M=26 K=7  MINY=-100 MAXY=200
+  EXE GFF XB=0.276 Q2=2.24 N=35 M=40 K=6  MINY=-100 MAXY=200
+  EXE GFF XB=0.430 Q2=3.25 N=60 M=63 K=4  MINY=-100 MAXY=200
+  EXE GFF XB=0.377 Q2=3.77 N=66 M=68 K=3  MINY=-100 MAXY=200
+ENDIF  
+
+EXEC CLOSE_PS
+SH ps2pdf  [DAT]_check_gff_sf.ps
+RETURN
+
+*----------------------------------
+
+MACRO GFF XB=0.13 Q2=1.15 n=1 m=7     MINY=-400 MAXY=400
+OPT LogY; OPT NGRI
+EXEC HDELET 101[N]; EXEC HDELET 102[N]
+K=[M]-[N]+1
+NULL 0 2.1 [MINY] [MAXY]; HLINE 0
+SET FCOL 2; FUN1 101[N] ET(-X,[XB],[Q2]) 100 0 2.0 S
+SET FCOL 4; FUN1 102[N] HT(-X,[XB],[Q2]) 100 0 2.0 S
+*SET FCOL 6; FUN1 102[N] HTEBAR(-X,[XB],[Q2]) 100 0 2.0 S
+
+EXE VECDEL _X; EXEC VECDEL _Y; EXE VECDEL _Y2; EXE VECDEL _DY2; EXE VECDEL _DY
+
+VE/COPY     tt([n]:[m]) _x
+
+VE/COPY   _et2([n]:[m]) _y2
+VE/COPY  _set2([n]:[m]) _dy2
+SIGMA _Y=SQRT(_Y2)
+SIGMA _DY=_DY2/2/_Y
+SET PMCI 2
+HPLOT/ERRORS _X _Y ZZ _DY   [k]   20 0.1 s
+
+VE/COPY   _ht2([n]:[m]) _y2
+VE/COPY  _sht2([n]:[m]) _dy2
+SIGMA _Y=SQRT(_Y2)
+SIGMA _DY=_DY2/2/_Y
+SET PMCI 4
+HPLOT/ERRORS _X _Y ZZ _DY   [k]   20 0.1 s
+
+VE/COPY   _htebar([n]:[m]) _y2
+VE/COPY  _shtebar([n]:[m]) _dy2
+*SIGMA _Y=_Y2
+*SIGMA _DY=_DY2
+SIGMA _Y=SQRT(_Y2)
+SIGMA _DY=_DY2/2/_Y
+SET PMCI 6
+*HPLOT/ERRORS _X _Y ZZ _DY   [k]   20 0.1 s
+
+OPT LINY
+NULL 0 1 0 1 SAB
+TEXT 0.7 0.75 Q2=[Q2] 0.2
+TEXT 0.7 0.65 xB=[XB] 0.2
+ATITLE -t,GeV^2
+RETURN
+
+*------------------------------------------
+
+MACRO HT T=0.2 XB=0.27 Q2=2.2 N=51 M=58 
+E=5.75
+K=[M]-[N]+1
+DO I=1,4
+  EXE VECDEL X[I]; EXE VECDEL Y[I]; EXE VECDEL S[I]
+  VE/CREATE X[I]([K]) R; VE/CREATE Y[I]([K]) R; VE/CREATE S[I]([K]) R
+ENDDO
+DO I=1,[K]
+   X=$EVAL(TT([N]-1+[I]));                         VE/INP X1([I]) [X]
+   IND=[N]-1+[I]; mess ind=[ind]
+   YT=$EVAL(ST([IND]));     YT=$RSIGMA([YT]);      VE/INP Y1([I]) [YT]
+   SYT=$EVAL(SST([IND]));  SYT=$RSIGMA([SYT]);     VE/INP S1([I]) [SYT]
+
+   YTT=$EVAL(STT([IND]));  YTT=$RSIGMA([YTT]);     VE/INP Y2([I]) [YTT]
+   SYTT=$EVAL(SSTT([IND]));  SYTT=$RSIGMA([SYTT]); VE/INP S2([I]) [SYTT]
+   mess [X] [yt] [syt] [ytt] [sytt]
+
+   FUN=HT_T(-[T],[XB],[Q2],[YT],[YTT],[E])
+   HT=$CALL([FUN])
+   VE/INP Y3([I]) [HT]
+
+   FUN=ET_TT(-[T],[XB],[Q2],[YTT],[E])
+   ET=$CALL([FUN])
+   VE/INP Y4([I]) [ET]
+ENDDO
+*=======================================
+RETURN
+
+
+MACRO CHECK_FFS DAT=pi0
+EXE OPEN_PS [DAT]_slope_HT_ET_xs.ps
+VE/CRE EPAR(2) R 1 1
+OPT LOGY
+ZONE 3 4
+TITLE [DAT]//' HT2 '//' and '//'ETbar2'
+*IF [DAT]='pi0' THEN; ZONE 4 4 ; ELSE; ZONE 3 4; ENDIF
+NTBINS3=$VDIM(BINS3)
+DO J=1,[NTBINS3]-1
+  I=$EVAL(BINS3([J]))
+ IF [DAT]='pi0' THEN; NULL 0 2 2 10000 ; ELSE; NULL 0 2 2 10000; ENDIF
+ I1=$EVAL(ITMIN([I])); I2=$EVAL(ITMAX([I]))
+ SET PMCI 4; SET FCOL 4
+ HPLOT/ERR  TT([I1]:[I2])  _ET2([I1]:[I2])  ZZ _SET2([I1]:[I2]) $EVAL(TBINS([I])) 20 0.1
+ VECTOR/FIT TT([I1]:[I2])  _ET2([I1]:[I2])     _SET2([I1]:[I2]) EXP2 S 2 EPAR
+ CALL GETFITPAR
+ VE/INP  ETSLOP([I])  $EVAL(PAR(2)) 
+ VE/INP  ETNORM([I])  $EVAL(PAR(1)) 
+ VE/INP SETSLOP([I]) $EVAL(SPAR(2)) 
+ VE/INP SETNORM([I]) $EVAL(SPAR(1)) 
+ SET PMCI 2; SET FCOL 2
+ HPLOT/ERR  TT([I1]:[I2])  _HT2([I1]:[I2])  ZZ _SHT2([I1]:[I2]) $EVAL(TBINS([I])) 20 0.1
+ VECTOR/FIT TT([I1]:[I2])  _HT2([I1]:[I2])     _SHT2([I1]:[I2]) EXP2 S 2 EPAR
+ CALL GETFITPAR
+ VE/INP  HTSLOP([I])  $EVAL(PAR(2)) 
+ VE/INP  HTNORM([I])  $EVAL(PAR(1)) 
+ VE/INP SHTSLOP([I]) $EVAL(SPAR(2)) 
+ VE/INP SHTNORM([I]) $EVAL(SPAR(1)) 
+*WAIT J=[J]_I=[I]
+ENDDO
+exe close_ps
+SH ps2pdf [DAT]_slope_HT_ET_xs.ps
+RETURN

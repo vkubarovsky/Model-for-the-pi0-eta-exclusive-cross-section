@@ -1,0 +1,40 @@
+MACRO FIT_XS  DAT=pi0
+HI/DEL 0
+VE/READ q,x,t,AG,x,sx1,sx2 pi0_xs.dat
+SIGMA A=AG/180.0*3.14159
+NP=$VDIM(Q)
+GOTO 2000
+
+  VE/DEL *
+  EXE READ_STUFF [VERSION] all
+1000:
+  VE/CREATE FIT(3) R 100 2 0.5
+  IMAX=$VDIM([VEC],1)
+  NQ=$VDIM(VQ,1)-1
+  NX=$VDIM(VX,1)-1
+  NT=$VDIM(VT,1)-1
+  NP=$VDIM(VP,1)-1
+  ITMAX=[NT]+1
+  DIM=$EVAL([NQ]*[NX]*[nT]*[NP])
+
+MESS 1DHIS 100 ' ' [DIM] 0.5 $EVAL([DIM]+0.5)
+1DHIS 100 ' ' [DIM] 0.5 $EVAL([DIM]+0.5)
+PUT_VEC/CON  100   XSEB
+PUT_VEC/ERRO 100  SXSEB
+
+*---------------------------------------------------------------
+APPLICATION HMINUIT END
+mini
+END
+*----------------------------------------------------------------
+* FCN=6939.853 0.3583+01 NFIT=1947
+*                    1       2         3       4        5        6      7       
+ 8      9        10
+VE/CREATE F(20) R  3041.64 2289.07 -12446.8 2267.02 0.665955 1.24709 1.08818 0.9
+78668 0.283433 -1.6786
+     HI/FIT 100 fitxs.f M 10 f
+MESS HI/FIT 100 fitxs.f M 10 f
+
+
+2000:
+RETURN

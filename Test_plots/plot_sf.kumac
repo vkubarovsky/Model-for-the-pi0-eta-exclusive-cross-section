@@ -1,0 +1,265 @@
+MACRO PLOT_SF  DAT=pi0 SYST=yes
+CLOSE 0; HI/DEL 0; VE/DEL *
+
+IF [DAT]=pi0 THEN
+   CALL dvmp_paw.f(0.135)
+ELSE
+   CALL dvmp_paw.f(0.540)
+ENDIF
+
+SET HCOL 1
+SET FWID 0.1
+VE/DEL *; HI/DEL 0
+OPT LINY
+OPT NSTA
+OPT NGRID
+OPT NDAT
+OPT NBOX
+
+EXEC HDELET  1234
+VE/CREATE ZZ(100) R
+VE/CREATE PAR(10) R
+VE/CREATE SPAR(10)
+VE/CREATE P(10) R
+VE/CREATE DIM1(1) I
+VE/CREATE DIM2(1) I
+VE/CREATE Z(100) r
+
+
+
+
+*
+  VE/CREATE XBI(18) R 
+  VE/CREATE Q2I(18) R
+
+IF [DAT]='pi0' THEN
+*
+****       PI0
+*
+  NKIN=18
+* Number of tbins in [Q2,xB] matrix  
+  VE/CREATE TBINS(18) I 7 8 8 8 8 4 7 8 7  5  7  4  2  5  1  4  2  1
+* Kinematics with number of points >=3
+  VE/CREATE BINS3(13) I 1 2 3 4 5 6   8 9 10 11 12    14    16  
+
+
+  VE/CREATE AMAS(1) R 0.135
+  VE/CREATE MAXIND(1) I 1867 
+  VE/READ q2,xb,tt,st,sst,s2st,slt,sslt,s2lt,stt,sstt,s2tt pi0_sf.dat
+  SIGMA SST=SQRT(SST**2+S2ST**2)
+  SIGMA SSTT=SQRT(SSTT**2+S2TT**2)
+
+  VE/CREATE AMAS(1) R 0.135
+  NP=$VDIM(Q2)
+  NP1=[NP]
+  NP2=$EVAL([NP]+1)
+  NP3=$EVAL(2*[NP])
+  VE/INPUT DIM1(1) [np]
+  VE/INPUT DIM2(1) [np2]
+
+ELSE
+*
+****       ETA
+*
+  NKIN=17
+* Number of tbins in [Q2,xB] matrix
+  VE/CREATE TBINS(17) I 7 7 5 7 5 1 2 6 6  4  5  4  4 1 1  3 1
+* Kinematics with number of points >=3
+  VE/CREATE BINS3(12)   I 1 2 3 4 5     8 9 10 11 12 13     16 
+
+VE/CREATE AMAS(1)   R 0.540
+VE/CREATE MAXIND(1) I 1245 
+VE/READ q2,xb,tt,st,sst,s2st,slt,sslt,s2lt,stt,sstt,s2tt eta_sf.dat
+
+  VE/CREATE AMAS(1) R 0.540
+  NP=$VDIM(Q2)
+  NP1=[NP]
+  NP2=$EVAL([NP]+1)
+  NP3=$EVAL(2*[NP])
+  VE/INPUT DIM1(1) [np]
+  VE/INPUT DIM2(1) [np2]
+ENDIF
+
+IF [SYST]=yes THEN
+*  SIGMA SXS=SQRT(SXS**2+SX2**2)
+  SIGMA SST=SQRT(SST**2+S2ST**2)
+  SIGMA SSLT=SQRT(SSLT**2+S2LT**2)
+  SIGMA SSTT=SQRT(SSTT**2+S2TT**2)
+MES SYSTEMATICS is INCLUDED
+ENDIF
+
+*-------------    Groups of bins in (Q2,xB]
+
+NTBINS=$VDIM(TBINS)
+NTBINS3=$VDIM(BINS3)
+
+VE/CREATE ITMIN([NTBINS]) I
+VE/CREATE ITMAX([NTBINS]) I
+
+
+VE/CREATE  ETSLOP([NTBINS]) R
+VE/CREATE SETSLOP([NTBINS]) R
+
+VE/CREATE  HTSLOP([NTBINS]) R
+VE/CREATE SHTSLOP([NTBINS]) R
+
+VE/CREATE  ETNORM([NTBINS]) R
+VE/CREATE SETNORM([NTBINS]) R
+
+VE/CREATE  HTNORM([NTBINS]) R
+VE/CREATE SHTNORM([NTBINS]) R
+
+
+IMIN=1
+DO I=1,[NTBINS]
+  IMAX=$EVAL([IMIN]+TBINS([I])-1)
+  Ve/INP ITMIN([I]) [IMIN]
+  Ve/INP ITMAX([I]) [IMAX]
+  VE/INP Q2I([I]) Q2([IMIN])
+  VE/INP XBI([I]) XB([IMIN])
+  IMIN=$EVAL([IMAX]+1)
+ENDDO
+
+VE/CREATE _Q2([NP3]) R; VE/COPY Q2(1:[NP]) _Q2(1:[NP]);  VE/COPY Q2(1:[NP]) _Q2([NP2]:[NP3]); 
+VE/CREATE _XB([NP3]) R; VE/COPY XB(1:[NP]) _XB(1:[NP]);  VE/COPY XB(1:[NP]) _XB([NP2]:[NP3]); 
+VE/CREATE _TT([NP3]) R; VE/COPY TT(1:[NP]) _TT(1:[NP]);  VE/COPY TT(1:[NP]) _TT([NP2]:[NP3]); 
+
+VE/CREATE   _ST([NP3]) R; VE/COPY ST(1:[NP])    _ST(1:[NP]);  VE/COPY  STT(1:[NP]) _ST([NP2]:[NP3]); 
+VE/CREATE _SSTT([NP3]) R; VE/COPY SST(1:[NP]) _SSTT(1:[NP]);  VE/COPY SSTT(1:[NP]) _SSTT([NP2]:[NP3]); 
+
+SIGMA SUMXS=ST+STT
+SIGMA SSUMXS=SQRT(SST**2+SSTT**2)
+
+1DHIST 10001 'HT+ET'  [NP1] 0.5 $EVAL([NP1]+0.5); PUT_VEC/CON 10001 ST;     PUT_VEC/ERROR 10001 SST
+1DHIST 10002 'ET'     [NP1] 0.5 $EVAL([NP1]+0.5); PUT_VEC/CON 10002 STT;    PUT_VEC/ERROR 10002 SST
+1DHIST 10003 'HT'     [NP1] 0.5 $EVAL([NP1]+0.5); PUT_VEC/CON 10003 SUMXS;  PUT_VEC/ERROR 10003 SSUMXS
+
+
+VE/CREATE SF(1) I 2
+
+
+VE/CREATE _ET2([NP])
+VE/CREATE _HT2([NP])
+VE/CREATE _SET2([NP])
+VE/CREATE _SHT2([NP])
+VE/CREATE _KET2([NP])
+VE/CREATE _KHT2([NP])
+DO I=1,[NP]
+   Q2_=$EVAL(_Q2([I]))
+   XB_=$EVAL(_XB([I]))
+   TT_=-$EVAL(_TT([I]))
+
+   FET='ET2('//[TT_]//','//[XB_]//','//[Q2_]//')'
+   FHT='HT2('//[TT_]//','//[XB_]//','//[Q2_]//')'
+
+   FF=$CALL([FET])
+   VE/INP _KET2([I]) [FF]
+   VE/INP _ET2([I])  $EVAL(STT([I])*_KET2([I]))
+   VE/INP _SET2([I]) $EVAL(SSTT([I])*_KET2([I])*(-1.0))
+*   IF _ET2([I]).LE.0. THEN
+*        VE/INP _ET2([I]) 0.
+*   ENDIF
+
+
+   FF=$CALL([FHT])
+   VE/INP _KHT2([I]) [FF]
+   VE/INP _HT2([I])  $EVAL((ST([I])+STT([I]))*_KHT2([I]))
+   SGM=$SIGMA(SQRT(SST([I])**2+SSTT([I])**2))
+   VE/INP _SHT2([I]) $EVAL([SGM]*_KHT2([I]))
+*   IF _HT2([I]).LE.0. THEN;  VE/INP _HT2([I]) 0.; ENDIF
+
+ENDDO
+
+VE/CREATE PSLOP(2) R 1 1
+
+******************** SIGMA_T and SIGMA_TT
+SH rm -f  [DAT]_sf.ps
+EXE OPEN_PS [DAT]_sf.ps 
+set vsiz 0.08
+set xwin 0.65
+set ywin 0.7
+
+IF [DAT]=pi0 THEN
+    TITLE [p]^0!//' '//[s]?T!//'  '//[s]?TT!//'  '//[s]?LT
+ELSE
+    TITLE [c]//' '//[s]?T!//'  '//[s]?TT!//'  '//[s]?LT
+ENDIF
+TITLE ' '
+ZONE 4 5
+
+DO J=1,[NTBINS]
+ I=$EVAL(TBINS([J]))
+
+ XB=$EVAL(XBI([J]))
+ Q2=$EVAL(Q2I([J]))
+ E=5.75
+
+ IF [DAT]='pi0' THEN; NULL 0 2 -400 600 ; ELSE; NULL 0 2 -100 200; ENDIF
+ HLINE 0
+
+ I1=$EVAL(ITMIN([J])); I2=$EVAL(ITMAX([J]))
+ SET PMCI 4; SET FCOL 4
+ HPLOT/ERR TT([I1]:[I2])  ST([I1]:[I2])  ZZ SST([I1]:[I2]) $EVAL(TBINS([J])) 20 0.1
+
+ FUN1 1000[J] xsigma_T(-x,[XB],[Q2],[E]) 100 0 2 s
+
+
+ SET PMCI 2; SET FCOL 2
+ HPLOT/ERR TT([I1]:[I2])  STT([I1]:[I2])  ZZ SSTT([I1]:[I2]) $EVAL(TBINS([J])) 20 0.1
+ FUN1 2000[J] xsigma_TT(-x,[XB],[Q2],[E]) 100 0 2 s
+
+ SET PMCI 1; SET FCOL 1
+ HPLOT/ERR TT([I1]:[I2])  SLT([I1]:[I2])  ZZ SSLT([I1]:[I2]) $EVAL(TBINS([J])) 20 0.1
+ FUN1 3000[J] xsigma_LT(-x,[XB],[Q2],[E]) 100 0 2 s
+
+
+ NULL 0 1 0 1 SAB
+ TEXT 0.62 0.8 Q2=[Q2] 0.15
+ TEXT 0.62 0.7 XB=[XB] 0.15
+
+ENDDO
+EXE CLOSE_PS
+SH ps2pdf  [DAT]_sf.ps
+WAIT
+
+******************** HT and ETbar
+
+SH rm -f [dat]_HT2_ET2.ps
+exe open_ps [dat]_HT2_ET2.ps
+
+VE/CRE EPAR(2) R 1 1
+OPT LOGY
+ZONE 3 4
+
+TITLE [DAT]//' HT2 '//' and '//'ETbar2'
+TITLE ' '
+
+ DO J=1,[NTBINS3]-1
+  I=$EVAL(BINS3([J]))
+  
+  XB=$EVAL(XBI([I]))
+  Q2=$EVAL(Q2I([I]))
+  E=5.75
+ 
+IF [DAT]='pi0' THEN; NULL 0 2 2 10000 ; ELSE; NULL 0 2 2 2000; ENDIF
+  I1=$EVAL(ITMIN([I])); I2=$EVAL(ITMAX([I]))
+  SET PMCI 4; SET FCOL 4
+  HPLOT/ERR  TT([I1]:[I2])  _ET2([I1]:[I2])  ZZ _SET2([I1]:[I2]) $EVAL(TBINS([I])) 20 0.1
+*  VECTOR/FIT TT([I1]:[I2])  _ET2([I1]:[I2])     _SET2([I1]:[I2]) EXP2 S 2 EPAR
+  FUN1 400[J] et2(-x,[XB],[Q2])*xsigma_tt(-x,[XB],[Q2],[E]) 100 0 2 s
+
+SET PMCI 2; SET FCOL 2
+  HPLOT/ERR  TT([I1]:[I2])  _HT2([I1]:[I2])  ZZ _SHT2([I1]:[I2]) $EVAL(TBINS([I])) 20 0.1
+*  VECTOR/FIT TT([I1]:[I2])  _HT2([I1]:[I2])     _SHT2([I1]:[I2]) EXP2 S 2 EPAR
+  FUN1 500[J] HT2(-x,[XB],[Q2])*(xsigma_t(-x,[XB],[Q2],[E])+xsigma_tt(-x,[XB],[Q2],[E])) 100 0 2 s
+
+ NULL 0 1 0 1 SAB
+ TEXT 0.62 0.6 Q2=[Q2] 0.15
+ TEXT 0.62 0.3 XB=[XB] 0.15
+
+ENDDO
+EXE CLOSE_PS
+SH ps2pdf [dat]_HT2_ET2.ps
+
+
+RETURN

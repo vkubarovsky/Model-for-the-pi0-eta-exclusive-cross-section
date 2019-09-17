@@ -1,0 +1,124 @@
+MACRO FITXS  DAT=pi0
+*
+*================================================================*
+*
+VE/DEL *
+VE/CREATE ZZ(100) R
+VE/CREATE PAR(10) R
+VE/CREATE SPAR(10)
+IF [DAT]='pi0' THEN
+  VE/CREATE AMAS(1) R 0.135
+  VE/CREATE MAXIND(1) I 1867 
+  VE/READ QV,XV,TV,AG,XS,SXS,sx2 pi0_xs.dat
+ELSE
+  VE/CREATE AMAS(1) R 0.540
+  VE/CREATE MAXIND(1) I 1245 
+  VE/READ QV,XV,TV,AG,XS,SXS,sx2 eta_xs.dat
+ENDIF
+
+SIGMA AV=AG/180.0*3.14159
+
+Application COMIS Quit
+       SUBROUTINE PRINTFIT
+* NPFITS  Number of points used in the fit
+* NFPAR   Number of free parameters
+* FITCHI  Chisquare
+* FITPAR  Values of parameters
+* FITSIG  Errors on parameters
+       COMMON/HCFITS/NCFITS,NPFITS,NFPAR,FITCHI,FITPAR(35),FITSIG(35)
+     +             ,FITDER(35)
+       VECTOR PAR(35)
+       VECTOR SPAR(35)
+       DO I=1,10
+         PAR(I)=FITPAR(I)
+         SPAR(I)=FITSIG(I)
+       ENDDO
+       END
+ Quit
+*
+*================================================================*
+*
+
+
+HI/DEL 1234
+NP=$VDIM(QV)
+mess NP=[np]
+1DHIS 1234 'XS' [NP] 0.5 $EVAL([NP]+0.5)
+mess 1DHIS 1234 'XS' [NP] 0.5 $EVAL([NP]+0.5)
+ve/print amas
+ve/print maxind
+wait 
+
+PUT_VEC/CON  1234   XS
+PUT_VEC/ERRO 1234  SXS
+
+VE/CREATE P(10) R
+VE/INPUT P(1:5)  17.1  0.238  0.396  0.0  0.634
+VE/INPUT P(6:10) 97.8  0.872  0.871  0.0  1.210
+
+VE/INPUT P(1:5)  0.0  0.238  0.396  0.0  0.634
+VE/INPUT P(6:10) 0.0  0.872  0.871  0.0  1.210
+
+
+*---------------------------------------------------------------
+APPLICATION HMINUIT END
+fix  4  9
+*mini
+END
+*----------------------------------------------------------------
+
+CALL PRINTFIT
+VE/WRITE PAR  ! 10e11.3
+VE/WRITE SPAR ! 10e11.3
+
+     HI/FIT 1234 fitxs.f M 10 P
+MESS HI/FIT 1234 fitxs.f M 10 P
+wait
+EXEC CHECK DATA=[DAT]
+
+return
+*--------------------------------------------------------------*
+
+MACRO CHECK DATA=pi0
+EXEC HDELET 101;
+EXEC HDELET 102;
+exe vecdel zz
+ve/create zz(100)
+*
+OPT GRID
+
+ZONE 2 3
+
+IF [data]='pi0' THEN
+  VE/READ q2,xb,tt,st,sst,s2st,slt,sslt,s2lt,stt,sstt,s2tt pi0_sf.dat
+  EXE FIGURE XB=0.131 Q2=1.15 n=1 m=7   k=7 MAXY=400
+  EXE FIGURE XB=0.187 Q2=1.61 N=16 M=23 K=7 MAXY=400
+  EXE FIGURE XB=0.223 Q2=1.75 N=24 M=31 K=8 MAXY=400
+  EXE FIGURE XB=0.276 Q2=2.21 N=51 M=58 K=8 MAXY=400
+  EXE FIGURE XB=0.343 Q2=2.71 N=71 M=77 K=7 MAXY=400
+  EXE FIGURE XB=0.43 Q2=3.22 N=84 M=88  K=5 MAXY=400
+ELSE
+  VE/READ q2,xb,tt,st,sst,s2st,slt,sslt,s2lt,stt,sstt,s2tt eta_sf.dat
+  EXE FIGURE XB=0.134 Q2=1.17 n=1 m=7   k=7 MAXY=200
+  EXE FIGURE XB=0.187 Q2=1.62 N=15 M=19 K=5 MAXY=200
+  EXE FIGURE XB=0.224 Q2=1.77 N=20 M=26 K=7 MAXY=200
+  EXE FIGURE XB=0.276 Q2=2.24 N=35 M=40 K=6 MAXY=200
+  EXE FIGURE XB=0.430 Q2=3.25 N=60 M=63 K=4 MAXY=200
+  EXE FIGURE XB=0.377 Q2=3.77 N=66 M=68 K=3 MAXY=200
+ENDIF  
+
+RETURN
+
+*--------------------------------------------------------------*
+
+MACRO FIGURE XB=0.13 Q2=1.15 n=1 m=7  k=7 MAXY=400
+EXEC HDELET 101; EXEC HDELET 102
+NULL 0 1.5 -[MAXY] [MAXY]; HLINE 0
+SET FCOL 2; FUN1 101 XSIGMA_T(-X,[XB],[Q2],5.75) 100 0 1.5 S
+SET FCOL 4; FUN1 102 XSIGMA_TT(-X,[XB],[Q2],5.75) 100 0 1.5 S
+SET PMCI 2; HPLOT/ERRORS tt([n]:[m]) st([n]:[m]) zz([n]:[m]) sst([n]:[m])   [k]   20 0.2 s
+SET PMCI 4; HPLOT/ERRORS tt([n]:[m]) stt([n]:[m]) zz([n]:[m]) sstt([n]:[m]) [k]   20 0.2 s
+TEXT 1 300 Q2=[Q2] 0.3
+TEXT 1 200 xB=[XB] 0.3
+ATITLE -t,GeV^2
+RETURN

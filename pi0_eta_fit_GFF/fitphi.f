@@ -1,0 +1,5 @@
+      REAL FUNCTION FITPHI(X)
+      COMMON /PAWPAR/ P(10)
+      FITPHI=P(1)+P(2)*COS(2*X)
+      RETURN
+      END

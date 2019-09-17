@@ -1,0 +1,6 @@
+ve/create a(8) r 1 2 3 4 5 6 7 8 9
+
+aa=a(1)
+bb=$eval(a(1))
+
+mess [aa] [bb] $eval(a(1)) a(1)

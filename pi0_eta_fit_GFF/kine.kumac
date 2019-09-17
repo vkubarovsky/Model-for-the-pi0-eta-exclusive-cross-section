@@ -1,0 +1,38 @@
+MACRO KINE N=32
+
+TT_=-TT([N])
+XB_=XB([N])
+Q2_=Q2([N])
+KET2_=_KET2([N])
+KHT2_=_KHT2([N])
+
+ST_=ST([N])
+SST_=SST([N])
+
+STT_=STT([N])
+SSTT_=SSTT([N])
+
+SUM=SUMXS([N])
+SSUM=SSUMXS([N])
+
+ FET='ET2('//[TT_]//','//[XB_]//','//[Q2_]//')'
+ FHT='HT2('//[TT_]//','//[XB_]//','//[Q2_]//')'
+MESS FET=[FET]
+MESS FHT=[FHT]
+
+ KET=$CALL([FET])
+ KHT=$CALL([FHT])
+
+MESS (T,X,Q2)=[TT_],[XB_],[Q2_]
+MESS ST=[ST_] +/- [SST_] STT=[STT_] +/- [SSTT_]  SUM=[SUM] +/- [SSUM] 
+MESS ET2=[KET]  HT2=[KHT]
+MESS _KET2 =[KET2_] _KHT2=[KHT2_]
+
+mess
+mess FET='ET2('//[TT_]//','//[XB_]//','//[Q2_]//')'
+mess  FHT='HT2('//[TT_]//','//[XB_]//','//[Q2_]//')'
+mess
+mess KET2_=_KET2([N])
+mess KHT2_=_KHT2([N])
+
+return

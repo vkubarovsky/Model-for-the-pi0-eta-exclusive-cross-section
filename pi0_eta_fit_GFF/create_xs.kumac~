@@ -1,0 +1,83 @@
+MACRO CREATE_XS DAT=pi0
+call fitxs.f(1.0)
+*
+*================================================================*
+*
+SET HCOL 1
+VE/DEL *; HI/DEL 0
+EXEC HDELET  1234
+VE/CREATE ZZ(100) R
+VE/CREATE PAR(10) R
+VE/CREATE SPAR(10)
+VE/CREATE P(10) R
+
+*
+
+IF [DAT]='pi0' THEN
+*
+****       PI0
+*
+  VE/CREATE AMAS(1) R 0.135
+  VE/CREATE MAXIND(1) I 1867 
+  VE/READ q2,xb,tt,st,sst,s2st,slt,sslt,s2lt,stt,sstt,s2tt pi0_sf.dat
+
+  NP=$VDIM(Q2)
+ELSE
+*
+****       ETA
+*
+  VE/CREATE AMAS(1) R 0.540
+  VE/CREATE MAXIND(1) I 1245 
+  VE/READ q2,xb,tt,st,sst,s2st,slt,sslt,s2lt,stt,sstt,s2tt eta_sf.dat
+
+  VE/CREATE AMAS(1) R 0.540
+  NP=$VDIM(Q2)
+
+ENDIF
+E=5.75
+IND=$SIGMA([NP]*20)
+VE/CREATE NQ2([IND]) R
+VE/CREATE NXB([IND]) R
+VE/CREATE NTT([IND]) R
+VE/CREATE NA([IND]) R
+VE/CREATE NXS([IND]) R
+VE/CREATE NSXS([IND]) R
+VE/CREATE NSXS2([IND]) R
+VE/CREATE NEPS([IND]) R
+VE/CREATE NCOS([IND]) R
+
+DO I=1,[NP]
+  Q=Q2([I])
+  X=XB([I])
+  T=TT([I])
+
+  XST=$EVAL(ST(I])
+  SXST=$EVAL(SST(I])
+  XSTT=$EVAL(STT(I])
+  SXSTT=$EVAL(SSTT(I])
+
+  FUN=EPSILON([X],[Q],[E])
+  EPS=$CALL([FUN])
+
+DO A=9,351,18
+    J=(I-1)*20+A
+    VE/INP(NQ2([J]) $EVAL(Q2([I]))
+    VE/INP(NXB([J]) $EVAL(XB([I]))
+    VE/INP(NTT([J]) $EVAL(TT([I]))
+    VE/INP(NA([J])  [A]
+
+
+    ARAD=SIGMA(2*[A]/180.*3.14159)
+    COST2=$SIGMA(COS([ARAD]))
+
+*    VE/INP NXS([J]) $SIGMA(([XST]+[EPS]*[XSTT]*[COST2])/2./3.14159)
+*    VE/INP NSXS([J]) $SIGMA(([XST]+[EPS]*[XSTT]*[COST2])/2./3.14159)
+    VE/INP NXS([J]) $SIGMA(([XST]+[EPS]*[XSTT]*[COST2]))
+    VE/INP NSXS([J]) $SIGMA(([XST]+[EPS]*[XSTT]*[COST2]))
+
+    VE/INP NEPS([J]) [EPS]
+    VE/INP NCOS([J]) [COST2]
+
+ENDDO	    
+ENDDO
+    

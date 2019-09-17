@@ -1,0 +1,94 @@
+MACRO FIT_XS  DAT=pi0
+*
+*================================================================*
+*
+VE/CREATE PAR(10) R
+VE/CREATE SPAR(10)
+
+Application COMIS Quit
+       SUBROUTINE PRINTFIT
+* NPFITS  Number of points used in the fit
+* NFPAR   Number of free parameters
+* FITCHI  Chisquare
+* FITPAR  Values of parameters
+* FITSIG  Errors on parameters
+       COMMON/HCFITS/NCFITS,NPFITS,NFPAR,FITCHI,FITPAR(35),FITSIG(35)
+     +             ,FITDER(35)
+       VECTOR PAR(35)
+       VECTOR SPAR(35)
+       DO I=1,10
+         PAR(I)=FITPAR(I)
+         SPAR(I)=FITSIG(I)
+       ENDDO
+       END
+ Quit
+*
+*================================================================*
+*
+
+
+HI/DEL 0
+VE/READ QV,XV,TV,AG,XS,SXS,sx2 pi0_xs.dat
+SIGMA AV=AG/180.0*3.14159
+NP=$VDIM(QV)
+mess NP=[np]
+1DHIS 1234 'XS' [NP] 0.5 $EVAL([NP]+0.5)
+mess 1DHIS 1234 'XS' [NP] 0.5 $EVAL([NP]+0.5)
+PUT_VEC/CON  1234   XS
+PUT_VEC/ERRO 1234  SXS
+
+VE/CREATE P(10) R 0.171E+02  0.238E+00  0.396E+00  0.000E+00  0.634E+00  0.978E+02  0.872E+00  0.871E+00  0.000E+00  0.121E+01
+
+*---------------------------------------------------------------
+APPLICATION HMINUIT END
+FIX 4
+FIX 9
+mini
+END
+*----------------------------------------------------------------
+
+CALL PRINTFIT
+VE/WRITE PAR  ! 10e11.3
+VE/WRITE SPAR ! 10e11.3
+
+     HI/FIT 1234 fitxs.f M 10 P
+MESS HI/FIT 1234 fitxs.f M 10 P
+*--------------------------------------------------------------*
+
+MACRO CHECK
+OPT GRID
+
+ZONE 2 3
+
+XB=0.13; Q2=1.15
+NULL 0 1.5 -400 400; HLINE 0
+FUN1 101 XSIGMA_T(-X,[XB],[Q2],5.75) 100 0 1.5 S
+FUN1 102 XSIGMA_TT(-X,[XB],[Q2],5.75) 100 0 1.5 S
+
+XB=0.19; Q2=1.61
+NULL 0 1.5 -400 400; HLINE 0
+FUN1 201 XSIGMA_T(-X,[XB],[Q2],5.75) 100 0 1.5 S
+FUN1 202 XSIGMA_TT(-X,[XB],[Q2],5.75) 100 0 1.5 S
+
+XB=0.22; Q2=1.74
+NULL 0 1.5 -400 400; HLINE 0
+FUN1 301 XSIGMA_T(-X,[XB],[Q2],5.75) 100 0 1.5 S
+FUN1 302 XSIGMA_TT(-X,[XB],[Q2],5.75) 100 0 1.5 S
+
+XB=0.28; Q2=2.21
+NULL 0 1.5 -400 400; HLINE 0
+FUN1 401 XSIGMA_T(-X,[XB],[Q2],5.75) 100 0 1.5 S
+FUN1 402 XSIGMA_TT(-X,[XB],[Q2],5.75) 100 0 1.5 S
+
+XB=0.34; Q2=2.71
+NULL 0 1.5 -400 400; HLINE 0
+FUN1 501 XSIGMA_T(-X,[XB],[Q2],5.75) 100 0 1.5 S
+FUN1 502 XSIGMA_TT(-X,[XB],[Q2],5.75) 100 0 1.5 S
+
+XB=0.41; Q2=3.22
+NULL 0 1.5 -400 400; HLINE 0
+FUN1 601 XSIGMA_T(-X,[XB],[Q2],5.75) 100 0 1.5 S
+FUN1 602 XSIGMA_TT(-X,[XB],[Q2],5.75) 100 0 1.5 S
+
+
+RETURN

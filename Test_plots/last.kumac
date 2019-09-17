@@ -1,0 +1,20 @@
+*** Begin of history file: Fri Sep 13 11:25:00 2019
+exe plots_sf
+sh pwd
+sh dir
+sh ls -l
+exe plot_sf
+sh ls -l ../
+exe plot_sf
+sh ls -l ../Functions/dvmp_paw.f
+CALL ../Functions/dvmp_paw.f(0.135)
+CALL ../Functions/dvmp_paw.f(0.135)
+exe plot_sf
+exe plot_sf eta
+sh ls -ltr *.pdf
+exe plot_sf eta
+exe plot_sf
+pwd
+sh pwd
+exit
+*** End   of history file: Fri Sep 13 11:31:33 2019

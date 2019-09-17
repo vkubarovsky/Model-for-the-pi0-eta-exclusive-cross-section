@@ -1,0 +1,5 @@
+      REAL FUNCTION SIGMA_T_TT(del2,xB,Q2,E)
+      SIGMA_T_TT=XSIGMA_T(del2,xB,Q2,E)+XSIGMA_TT(del2,xB,Q2,E)
+      RETURN
+      END
+
