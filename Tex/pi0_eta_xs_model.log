@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  19 SEP 2019 12:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  19 SEP 2019 12:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -421,6 +421,8 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 67.
 LaTeX Info: Redefining \pageref on input line 67.
 LaTeX Info: Redefining \nameref on input line 67.
+
+(./pi0_eta_xs_model.out) (./pi0_eta_xs_model.out)
 \@outlinefile=\write3
 \openout3 = `pi0_eta_xs_model.out'.
 
@@ -430,48 +432,27 @@ Class revtex4 Warning: Assuming \noaffiliation for Valery Kubarovsky\\ Thomas J
 efferson National Accelerator Facility, Newport News, Virginia 23606, USA.
 
 [1{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<fig16_scissored.pdf, id=37, 370.38374pt x 331.2375pt>
+<fig16_scissored.pdf, id=67, 370.38374pt x 331.2375pt>
 File: fig16_scissored.pdf Graphic file (type pdf)
 
 <use fig16_scissored.pdf>
 Package pdftex.def Info: fig16_scissored.pdf used on input line 194.
 (pdftex.def)             Requested size: 254.5195pt x 227.62204pt.
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 222.
-
-
-[2 <./fig16_scissored.pdf>] <ht_et_pi0_eta.pdf, id=115, 614.295pt x 794.97pt>
+ [2 <./fig16_scissored.pdf>]
+<ht_et_pi0_eta.pdf, id=146, 614.295pt x 794.97pt>
 File: ht_et_pi0_eta.pdf Graphic file (type pdf)
-
-<use ht_et_pi0_eta.pdf>
+ <use ht_et_pi0_eta.pdf>
 Package pdftex.def Info: ht_et_pi0_eta.pdf used on input line 234.
 (pdftex.def)             Requested size: 329.80219pt x 426.79134pt.
- <ht_et_pi.pdf, id=116, 614.295pt x 794.97pt>
-File: ht_et_pi.pdf Graphic file (type pdf)
 
-<use ht_et_pi.pdf>
+<ht_et_pi.pdf, id=147, 614.295pt x 794.97pt>
+File: ht_et_pi.pdf Graphic file (type pdf)
+ <use ht_et_pi.pdf>
 Package pdftex.def Info: ht_et_pi.pdf used on input line 256.
 (pdftex.def)             Requested size: 227.62204pt x 294.57098pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 276.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 276.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 284.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 288.
-
 
 [3 <./ht_et_pi0_eta.pdf>]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 312.
@@ -482,133 +463,56 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 312.
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 329.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 330.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 330.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 330.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 330.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 330.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 330.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 330.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 330.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 331.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 332.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 334.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 334.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 334.
-
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 334.
-
-
-[4 <./ht_et_pi.pdf>]
+ [4 <./ht_et_pi.pdf>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[5] <../Test_plots/pi0_sf.pdf, id=229, 614.295pt x 794.97pt>
+[5] <../Test_plots/pi0_sf.pdf, id=279, 614.295pt x 794.97pt>
 File: ../Test_plots/pi0_sf.pdf Graphic file (type pdf)
 
 <use ../Test_plots/pi0_sf.pdf>
 Package pdftex.def Info: ../Test_plots/pi0_sf.pdf used on input line 493.
 (pdftex.def)             Requested size: 659.60437pt x 853.58267pt.
 
-<../Test_plots/eta_sf.pdf, id=230, 614.295pt x 794.97pt>
+<../Test_plots/eta_sf.pdf, id=280, 614.295pt x 794.97pt>
 File: ../Test_plots/eta_sf.pdf Graphic file (type pdf)
 
 <use ../Test_plots/eta_sf.pdf>
 Package pdftex.def Info: ../Test_plots/eta_sf.pdf used on input line 509.
 (pdftex.def)             Requested size: 659.60437pt x 853.58267pt.
 
-<../Test_plots/pi0_HT2_ET2.pdf, id=231, 614.295pt x 794.97pt>
+<../Test_plots/pi0_HT2_ET2.pdf, id=281, 614.295pt x 794.97pt>
 File: ../Test_plots/pi0_HT2_ET2.pdf Graphic file (type pdf)
 
 <use ../Test_plots/pi0_HT2_ET2.pdf>
 Package pdftex.def Info: ../Test_plots/pi0_HT2_ET2.pdf used on input line 526.
 (pdftex.def)             Requested size: 659.60437pt x 853.58267pt.
 
-<../Test_plots/eta_HT2_ET2.pdf, id=232, 614.295pt x 794.97pt>
+<../Test_plots/eta_HT2_ET2.pdf, id=282, 614.295pt x 794.97pt>
 File: ../Test_plots/eta_HT2_ET2.pdf Graphic file (type pdf)
 
 <use ../Test_plots/eta_HT2_ET2.pdf>
 Package pdftex.def Info: ../Test_plots/eta_HT2_ET2.pdf used on input line 542.
 (pdftex.def)             Requested size: 659.60437pt x 853.58267pt.
-
-
-Package hyperref Warning: Suppressing link with empty target on input line 554.
-
-
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 587.
-[6]
+ [6]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 587.
  [7 <../Test_plots/pi0_sf.pdf>] [8 <../Test_plots/eta_sf.pdf>] [9 <../Test_plot
-s/pi0_HT2_ET2.pdf>] [10 <../Test_plots/eta_HT2_ET2.pdf>]
-(./pi0_eta_xs_model.aux)
+s/pi0_HT2_ET2.pdf>] [10 <../Test_plots/eta_HT2_ET2.pdf>] (./pi0_eta_xs_model.au
+x)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 587.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 587.
-
-
-Package rerunfilecheck Warning: File `pi0_eta_xs_model.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `pi0_eta_xs_model.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  B63A0D7B6D6CFF5A724208A36618E68A;488.
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right .
-
-
+Package rerunfilecheck Info: File `pi0_eta_xs_model.out' has not changed.
+(rerunfilecheck)             Checksum: B63A0D7B6D6CFF5A724208A36618E68A;488.
  ) 
 Here is how much of TeX's memory you used:
- 7682 strings out of 493089
- 108447 string characters out of 6134842
- 223844 words of memory out of 5000000
- 11025 multiletter control sequences out of 15000+600000
+ 7695 strings out of 493089
+ 108629 string characters out of 6134842
+ 225955 words of memory out of 5000000
+ 11034 multiletter control sequences out of 15000+600000
  9707 words of font info for 36 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  29i,16n,28p,878b,409s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -636,10 +540,10 @@ st/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2015/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2015/texmf-dist/f
 onts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2015/texmf-dist/fon
 ts/type1/urw/helvetic/uhvr8a.pfb>
-Output written on pi0_eta_xs_model.pdf (10 pages, 533892 bytes).
+Output written on pi0_eta_xs_model.pdf (10 pages, 535384 bytes).
 PDF statistics:
- 365 PDF objects out of 1000 (max. 8388607)
- 294 compressed objects within 3 object streams
+ 410 PDF objects out of 1000 (max. 8388607)
+ 337 compressed objects within 4 object streams
  60 named destinations out of 1000 (max. 500000)
- 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 100 words of extra memory for PDF output out of 10000 (max. 10000000)
 
