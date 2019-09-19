@@ -135,7 +135,9 @@ The unpolarized reduced meson cross section is described
 \label{Eq:Reduced}
 \end{equation}
 \noindent
-$\phi$ is the angle between the lepton and hadron planes. The lepton planeis defined by the incident and the scattered electron. The hadron planeis defined by the meson and the scattered proton.
+$\phi$ is the angle between the lepton and hadron planes. The lepton plane
+is defined by the incident and the scattered electron. The hadron plane
+is defined by the meson and the scattered proton.
 
 \noindent 
 References~\cite{Goloskokov:2011rd,GL} obtain the following relations for unpolarized structure functions:
@@ -438,6 +440,47 @@ $p_{12}$  &   &   & \ \   3.987  $\pm$0.818 \\
 \end{tabular}
 \label{Tab:eta_fit_parameters}
 \end{table}
+
+\section{GITHUB Repository}
+
+The code can be downloaded from the githup repository:
+
+\href{https://github.com/vkubarovsky/Model-for-the-pi0-eta-exclusive-cross-section}{$\pi^0/\eta$ cross section model}.
+
+The package consists of 4 subdirectories:
+\begin{enumerate}
+\item Functions
+
+There are 3 functions in this directory.
+\begin{enumerate}
+\item dvmpx.F(t,xB,Q2,phi,Ebeam,Helicity, Mesonmass)
+\item dvmw.F(CosTheta,W,Q2,$\phi$,Ebeam, helicity,Mesonmass,$\sigma_{T}$, $\sigma_{L}$, $\sigma_{TT}$, $\sigma_{LT}$, $\sigma_{LTP}$)
+\item Exclurad.F
+
+The package to calculate the radiative corrections for the reaction $ep\to e'p'(pi^0/\eta$.
+\end{enumerate}
+\item Test\_plots
+
+The PAW kumac plot\_sf.kumac produces all plots
+\item Tex
+
+pi\_eta\_model.pdf  is the description of the package.
+\item Pi0\_eta\_fit\_GFF
+
+PAW code to fit the model parameters. The main kumac file is fit\_xs.kumac
+\end{enumerate}
+
+
+
+
+
+
+The $\pi^0/\eta$ generator based on this model is located in the githup repository
+
+\href{https://github.com/drewkenjo/aao_norad}{$\pi^0/\eta$ generator}.
+
+
+
 
 %%%%%%%%%%%%%%
 

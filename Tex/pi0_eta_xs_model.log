@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  17 SEP 2019 16:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  19 SEP 2019 12:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -368,73 +368,78 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../Test_plots/pi0_sf.pdf, id=168, 614.295pt x 794.97pt>
+[5] <../Test_plots/pi0_sf.pdf, id=171, 614.295pt x 794.97pt>
 File: ../Test_plots/pi0_sf.pdf Graphic file (type pdf)
 
 <use ../Test_plots/pi0_sf.pdf>
-Package pdftex.def Info: ../Test_plots/pi0_sf.pdf used on input line 451.
+Package pdftex.def Info: ../Test_plots/pi0_sf.pdf used on input line 492.
 (pdftex.def)             Requested size: 659.60437pt x 853.58267pt.
 
-<../Test_plots/eta_sf.pdf, id=169, 614.295pt x 794.97pt>
+<../Test_plots/eta_sf.pdf, id=172, 614.295pt x 794.97pt>
 File: ../Test_plots/eta_sf.pdf Graphic file (type pdf)
 
 <use ../Test_plots/eta_sf.pdf>
-Package pdftex.def Info: ../Test_plots/eta_sf.pdf used on input line 467.
+Package pdftex.def Info: ../Test_plots/eta_sf.pdf used on input line 508.
 (pdftex.def)             Requested size: 659.60437pt x 853.58267pt.
 
-<../Test_plots/pi0_HT2_ET2.pdf, id=170, 614.295pt x 794.97pt>
+<../Test_plots/pi0_HT2_ET2.pdf, id=173, 614.295pt x 794.97pt>
 File: ../Test_plots/pi0_HT2_ET2.pdf Graphic file (type pdf)
 
 <use ../Test_plots/pi0_HT2_ET2.pdf>
-Package pdftex.def Info: ../Test_plots/pi0_HT2_ET2.pdf used on input line 484.
+Package pdftex.def Info: ../Test_plots/pi0_HT2_ET2.pdf used on input line 525.
 (pdftex.def)             Requested size: 659.60437pt x 853.58267pt.
 
-<../Test_plots/eta_HT2_ET2.pdf, id=171, 614.295pt x 794.97pt>
+<../Test_plots/eta_HT2_ET2.pdf, id=174, 614.295pt x 794.97pt>
 File: ../Test_plots/eta_HT2_ET2.pdf Graphic file (type pdf)
 
 <use ../Test_plots/eta_HT2_ET2.pdf>
-Package pdftex.def Info: ../Test_plots/eta_HT2_ET2.pdf used on input line 500.
+Package pdftex.def Info: ../Test_plots/eta_HT2_ET2.pdf used on input line 541.
 (pdftex.def)             Requested size: 659.60437pt x 853.58267pt.
- [5] [6] [7 <../Test_plots/pi0_sf.pdf>]
-[8 <../Test_plots/eta_sf.pdf>] [9 <../Test_plots/pi0_HT2_ET2.pdf>] [10 <../Test
-_plots/eta_HT2_ET2.pdf>] (./pi0_eta_xs_model.aux) ) 
+ [6] [7 <../Test_plots/pi0_sf.pdf>] [8 <../Test_plots/eta_sf.pdf>] [9 <../Test_
+plots/pi0_HT2_ET2.pdf>] [10 <../Test_plots/eta_HT2_ET2.pdf>] (./pi0_eta_xs_mode
+l.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right .
+
+
+ ) 
 Here is how much of TeX's memory you used:
- 4195 strings out of 493089
- 55427 string characters out of 6134842
- 148136 words of memory out of 5000000
+ 4196 strings out of 493089
+ 55438 string characters out of 6134842
+ 146136 words of memory out of 5000000
  7614 multiletter control sequences out of 15000+600000
- 9707 words of font info for 36 fonts, out of 8000000 for 9000
+ 9875 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  38i,16n,29p,870b,325s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2015/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2015/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2015/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2015/texmf-d
-ist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/local/texlive/2015/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2015/texmf
--dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2015/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2015/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2015/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2015/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2015/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2015/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2015/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr7.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr9.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmsy5.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmsy6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmsy7.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmsy9.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmti9.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.p
-fb>
-Output written on pi0_eta_xs_model.pdf (10 pages, 529246 bytes).
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb><
+/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
+usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb
+></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
+/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></u
+sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr
+/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/l
+ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/loc
+al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local
+/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive
+/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/20
+15/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2015/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2015/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2015/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2015/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2015/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2015/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2015/texmf-dist/font
+s/type1/urw/helvetic/uhvr8a.pfb>
+Output written on pi0_eta_xs_model.pdf (10 pages, 542614 bytes).
 PDF statistics:
- 273 PDF objects out of 1000 (max. 8388607)
- 203 compressed objects within 3 object streams
+ 277 PDF objects out of 1000 (max. 8388607)
+ 206 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
  36 words of extra memory for PDF output out of 10000 (max. 10000000)
 
