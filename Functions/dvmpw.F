@@ -14,7 +14,7 @@ c W is W
 c xb,Q2 x and Q^2 (GeV^2)
 c Phi_g angle in the photon frame (radians)
 c E energy of the electron in GeV
-c heli electron helicity -1.0 or +1.0
+c heli electron helicity -1 or +1
 c
 c del2=t (negative GeV^2)           NEGATIVE !!!!
 C
@@ -22,7 +22,7 @@ C MESONMASS is the mass of the pi0 or eta.
 c
 
       IMPLICIT NONE
-      REAL    COST,W,del2,xb,Q2, Phi_g,E,heli, mesonmass
+      REAL    COST,W,del2,xb,Q2, Phi_g,E, mesonmass
       REAL    Mp, mele, pi
       parameter (Mp=0.93827)
       parameter (mele=0.000511)
@@ -34,6 +34,7 @@ c
       EXTERNAL EPSILON,SIGMA_T,SIGMA_L, SIGMA_LT, SIGMA_TT
       EXTERNAL SIGMA_LTP
       REAL     JACG,JACR
+      Integer heli
       LOGICAL  CHECK_KINE
 c      REAL DVMPX
 C      INCLUDE 'pi0eta.par'
