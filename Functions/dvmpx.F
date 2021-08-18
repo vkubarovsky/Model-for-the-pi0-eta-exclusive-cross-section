@@ -11,11 +11,11 @@ cdel2=t (negative GeV^2)           NEGATIVE !!!!
 cxb,Q2 x and Q^2 (GeV^2)
 c Phi_g angle in the photon frame (radians)
 c E energy of the electron in GeV
-c heli electron helicity -1.0 or +1.0
+c heli electron helicity -1 or +1
 c MESONMASS is the mass of the pi0 or eta
 
       IMPLICIT NONE
-      REAL del2,xb,Q2, Phi_g,E,heli,MESONMASS
+      REAL del2,xb,Q2, Phi_g,E,MESONMASS
       real Mp, mele, pi
       parameter (Mp=0.93827)
       parameter (mele=0.000511)
@@ -28,7 +28,7 @@ c MESONMASS is the mass of the pi0 or eta
       EXTERNAL XSIGMA_LTP
       REAL     FL
       LOGICAL  XCHECK_KINE
-      
+      INTEGER heli
       CALL XSINIT(MESONMASS)
       
       DVMPX = 0.0
@@ -140,10 +140,10 @@ C-------------------------------------------------------------------------------
 C=============================================================================
       REAL FUNCTION XRXSB(del2,x,Q2, Phi_g,E,heli,MESONMASS)
       IMPLICIT NONE
-      REAL       del2,x,Q2,Phi_g,E,heli,MESONMASS
+      REAL       del2,x,Q2,Phi_g,E,MESONMASS
       REAL       DVMPX,fluxw, pi
       PARAMETER (PI=3.1415926536)
-
+      INTEGER heli
       CALL XSINIT(MESONMASS)
 
       XRXSB=DVMPX(del2,x,Q2,Phi_g,E,heli,MESONMASS)/FLUXW(x,Q2,E)
