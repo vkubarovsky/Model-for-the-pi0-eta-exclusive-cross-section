@@ -971,7 +971,7 @@ c
         t_dummy =  -(-q2_dummy) - amu2 + 2*nu_cm*E_pi_cm
      1             - hcs_dummy * (2*qv_mag_cm*ppi_mag_cm)
 c        print *, W_dummy, xb_dummy, hcs_dummy, t_dummy, amp2, amu2
-        call dvmpw(hcs_dummy,w_dummy,q2_dummy,0.0,bmom,heli,mesonmass,
+        call dvmpw(hcs_dummy,w_dummy,q2_dummy,0,bmom,heli,mesonmass,
      1            sig_t,sig_l,sig_tt,sig_lt,sig_ltp) 
 c	    call dvmp(-t_dummy,xb_dummy,hQ2,0.0,bmom,0,
 c     *   sig_t,sig_l,sig_tt,sig_lt,sig_ltp)
