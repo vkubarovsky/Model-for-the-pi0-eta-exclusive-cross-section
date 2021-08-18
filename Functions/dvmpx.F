@@ -387,7 +387,7 @@ C      print *,'t=',del2,del2min,del2max,tminq(Q2,xb)
       EPSILON=(1.0-y-e1)/(1-y+y**2/2+e1)
 C      print *,'Epsilon',epsilon
       IF(EPSILON.LT.0. .OR.EPSILON .GT.1.)   RETURN
-C  ksi has to be <1. vpk
+C  KSI has to be <1. vpk
       KSI=XB/(2-XB)*(1+MP**2/Q2)
       IF(KSI.GE.1.) RETURN
       XCHECK_KINE=.TRUE.
