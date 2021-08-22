@@ -351,7 +351,8 @@ C===============================================================================
 
       REAL nu,W2,W,qmod,E1cm,P1cm,E2cm,P2cm,del2max,del2min
       REAL  xmin1,xmax1
-      REAL y, e1, epsilon,tminq
+      REAL tminq
+      DOUBLE PRECISION y,e1,epsilon
       REAL KSI
       REAL AM(2)
       DATA AM/0.134976,0.547300/
@@ -399,7 +400,8 @@ C===============================================================================
 
       real function fluxw(x,Q2,E)
       implicit none
-      real x,Q2,E,y,eps,e1
+      real x,Q2,E
+      double precision y,eps,e1
       real alpha,Mp,PI
       parameter (alpha=1.0/137.036,Mp=0.93827231,PI=3.14151926)
 
@@ -415,7 +417,8 @@ C===============================================================================
 
       real function EPSILON(x,Q2,E)
       implicit none
-      real x,Q2,E,y,eps,e1
+      real x,Q2,E
+      double precision y,e1
       real alpha,Mp,PI
       parameter (alpha=1.0/137.036,Mp=0.93827231,PI=3.14151926)
 c
