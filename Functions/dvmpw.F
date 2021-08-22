@@ -186,7 +186,7 @@ C===============================================================================
 
       real nu,W2,qmod,E1cm,P1cm,E2cm,P2cm,del2max,del2min
       real  xmin1,xmax1
-      real y, e1, epsilon
+      DOUBLE PRECISION y, e1, epsilon
 
       REAL AM(2)
       DATA AM/0.134976,0.547300/
@@ -200,10 +200,10 @@ C===============================================================================
       XB=Q2/(W2+Q2-Mp*Mp)
       nu  = (W2+Q2-Mp*Mp)/(2*Mp)
       qmod = sqrt(nu**2 + Q2)
-      IF(W         .LT. Mp+Mpi0)              RETURN
-      IF(W         .GT. -Q2+2*Mp*E+Mp*Mp)     RETURN
+      IF(W         .LE. Mp+Mpi0)              RETURN
+      IF(W2        .GE. -Q2+2*Mp*E+Mp*Mp)     RETURN
       IF(Q2/(4*E*(E-NU)) .GE. 1.0)            RETURN
-      IF(XB        .LT. Q2/(2*Mp*E))          RETURN
+      IF(XB        .LE. Q2/(2*Mp*E))          RETURN
       IF(ABS(COST) .GT. 1.0)                  RETURN
       xmin1 = Q2/(2.0*Mp*E)
       xmax1 = 1.0
@@ -224,7 +224,8 @@ C===============================================================================
       EPSILON=(1.0-y-e1)/(1-y+y**2/2+e1)
 
       IF(EPSILON.LT.0. .OR.EPSILON .GT.1.)         RETURN
-
+      KSI=X/(2-X)*(1+MP**2/Q2)
+      IF(KSI.GE.1.) RETURN
 C      jacobian
 C      JAC=4*P1cm*P2CM*W*XB/(W2+Q2-Mp*Mp)
       JACG=2*W*XB/(W2+Q2-Mp*Mp)
