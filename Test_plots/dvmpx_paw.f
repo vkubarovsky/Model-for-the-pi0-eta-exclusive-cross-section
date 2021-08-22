@@ -393,7 +393,8 @@ C===============================================================================
 
       REAL nu,W2,W,qmod,E1cm,P1cm,E2cm,P2cm,del2max,del2min
       REAL  xmin1,xmax1
-      REAL y, e1, epsilon,tminq
+      REAL tminq
+      double precision y,e1,epsilon
       REAL KSI
       REAL AM(2)
       DATA AM/0.134976,0.547300/
@@ -407,7 +408,7 @@ C===============================================================================
       nu  = Q2/(2D0*Mp*xb)
       W2  = Mp**2 + 2.0*Mp*nu - Q2
 C      print *,'W2=',W2
-      IF(W2.LT.(Mp+Mpi0)**2)                  RETURN
+      IF(W2.LE.(Mp+Mpi0)**2)                  RETURN
       W   = sqrt(W2)
       qmod = sqrt(nu**2 + Q2)
 
@@ -442,7 +443,8 @@ C===============================================================================
 
       real function fluxw(x,Q2,E)
       implicit none
-      real x,Q2,E,y,eps,e1
+      real x,Q2,E
+      double precision y,eps,e1
       real alpha,Mp,PI
       parameter (alpha=1.0/137.036,Mp=0.93827231,PI=3.14151926)
 
@@ -458,7 +460,8 @@ C===============================================================================
 
       real function EPSILON(x,Q2,E)
       implicit none
-      real x,Q2,E,y,eps,e1
+      real x,Q2,E
+      double precision y,e1
       real alpha,Mp,PI
       parameter (alpha=1.0/137.036,Mp=0.93827231,PI=3.14151926)
 c
