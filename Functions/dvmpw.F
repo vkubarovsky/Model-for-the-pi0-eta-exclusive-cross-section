@@ -187,7 +187,7 @@ C===============================================================================
       real nu,W2,qmod,E1cm,P1cm,E2cm,P2cm,del2max,del2min
       real  xmin1,xmax1
       DOUBLE PRECISION y, e1, epsilon
-
+      REAL KSI
       REAL AM(2)
       DATA AM/0.134976,0.547300/
       INTEGER K
@@ -224,7 +224,7 @@ C===============================================================================
       EPSILON=(1.0-y-e1)/(1-y+y**2/2+e1)
 
       IF(EPSILON.LT.0. .OR.EPSILON .GT.1.)         RETURN
-      KSI=X/(2-X)*(1+MP**2/Q2)
+      KSI=XB/(2-XB)*(1+MP**2/Q2)
       IF(KSI.GE.1.) RETURN
 C      jacobian
 C      JAC=4*P1cm*P2CM*W*XB/(W2+Q2-Mp*Mp)
