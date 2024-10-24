@@ -1,0 +1,11 @@
+vpk_model/
+│
+├── vpk_model/
+│   ├── __init__.py
+│   ├── constants.py
+│   ├── calculations.py
+│   ├── plotting.py
+│
+├── setup.py
+├── README.md
+└── LICENSE

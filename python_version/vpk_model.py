@@ -1,3 +1,4 @@
+
 #!/usr/bin/python3
 import numpy as np
 import matplotlib.pyplot as plt
@@ -265,19 +266,7 @@ def phase(Q2,xb):
   
 #------------------------------------------------------------#
 
-def plotsf(t,fn,xb,Q2,E,label,color):
-    xs = t*0
-    for i in range(np.size(t)):
-        xs[i] = fn(-t[i],xb,Q2,E)
-    plt.plot(t,xs,color,label=label)
-
-def plotw(c,fn,w,Q2,E,label,color):
-    xs = t*0
-    for i in range(np.size(c)):
-        xs[i] = fn(c[i],w,Q2,E)
-    plt.plot(t,xs,color,label=label)
-    
-fig=plt.figure(figsize=(12,10),dpi=100)
+fig=plt.figure(figsize=(10,8),dpi=100)
 plt.title("Structure Function vs -t", fontsize='16')	
 #plt.plot([1, 2, 3, 4], [6,2,8,4])  #plot the points
 plt.xlabel("-t",fontsize='13')	    
@@ -287,22 +276,22 @@ plt.legend(('sigma_T'),loc='upper center')
 plt.grid()                                          
 
 Ebeam=10.6
-Ebeam=24.0
+#Ebeam=24.0
 q2=1.14; xb=0.131
 t = np.linspace(0., 2., 1000)
 plt.plot([0.,2.],[0.,0.],'black')
 
-plotsf(t,xsigma_T, xb,q2,Ebeam,"$\sigma_T$",   'red')
-plotsf(t,xsigma_TT,xb,q2,Ebeam,"$\sigma_{TT}$",'blue')
-plotsf(t,xsigma_LT,xb,q2,Ebeam,"$\sigma_{LT}$",'green')
+xs = [xsigma_T (-t,xb,q2,Ebeam) for t in t]; plt.plot(t,xs,label="$\sigma_{T}$", color='red', linestyle='-')
+xs = [xsigma_TT(-t,xb,q2,Ebeam) for t in t]; plt.plot(t,xs,label=r"$\sigma_{TT}$",color='blue')
+xs = [xsigma_LT(-t,xb,q2,Ebeam) for t in t]; plt.plot(t,xs,label=r"$\sigma_{LT}$",color='green')
 
 plt.legend(loc='upper right', prop={'size': 24})
 plt.show(block=False)
 plt.savefig('ds_dxB.png')
 
 #-----------------
-fig=plt.figure(figsize=(12,10),dpi=100)
-plt.title("Structure Function vs -t", fontsize='16')
+fig=plt.figure(figsize=(10,8),dpi=100)
+plt.title("Structure Function vs CosT", fontsize='16')
 #plt.plot([1, 2, 3, 4], [6,2,8,4])	                #plot the points
 plt.xlabel("-t",fontsize='13')	 
 plt.ylabel("xs,nb",fontsize='13')
@@ -311,12 +300,33 @@ plt.grid()
 cost=0.9; w=2.2
 cst = np.linspace(-1., 1., 1000)
 plt.xlabel("CosT",fontsize='13')	            
-plt.plot([0.,2.],[0.,0.],'black')
+plt.plot([0.,1.],[0.,0.],'black')
 
-plotw(cst,sigma_T, w,q2,Ebeam,"$\sigma_T$",   'red')
-plotw(cst,sigma_TT,w,q2,Ebeam,"$\sigma_{TT}$",'blue')
-plotw(cst,sigma_LT,w,q2,Ebeam,"$\sigma_{LT}$",'green')
+xs = [sigma_T (cst,w,q2,Ebeam)  for cst in cst]; plt.plot(cst,xs,label="$\sigma_T$",   color='red')
+xs = [sigma_TT (cst,w,q2,Ebeam) for cst in cst]; plt.plot(cst,xs,label="$\sigma_{TT}$",   color='blue')
+xs = [sigma_LT (cst,w,q2,Ebeam) for cst in cst]; plt.plot(cst,xs,label="$\sigma_{LT}$",   color='green')
 
 plt.legend(loc='upper center', prop={'size': 24})
 plt.show(block=False)
 plt.savefig('ds_dW.png')
+
+#-----------------
+fig=plt.figure(figsize=(10,8),dpi=100)
+plt.title("GPD formfactors vs Q2", fontsize='16')
+
+plt.xlabel("Q2",fontsize='13')	 
+plt.ylabel("Structure Function,nb",fontsize='13')
+plt.grid()                                          
+plt.xlabel("Q2",fontsize='13')	            
+plt.plot([0.,5.],[0.,0.],'black')
+
+q2 = np.linspace(1., 5., 1000)
+del2 = -0.5; xb=0.2; Ebeam=10.6
+xs = [ET(del2,xb,q2) for q2 in q2]; plt.plot(q2,xs,label="$E_T$",   color='blue')
+xs = [HT(del2,xb,q2) for q2 in q2]; plt.plot(q2,xs,label="$H_T$",   color='red')
+#sf_T  = plotSF_Q2(HT, del2,xb,q2,Ebeam,"$H_T$",   'red')
+
+plt.legend(loc='upper left', prop={'size': 24})
+plt.show(block=False)
+plt.savefig('sf_dQ2.png')
+

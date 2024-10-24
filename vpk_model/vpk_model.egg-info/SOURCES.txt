@@ -1,0 +1,7 @@
+README.md
+setup.py
+vpk_model.egg-info/PKG-INFO
+vpk_model.egg-info/SOURCES.txt
+vpk_model.egg-info/dependency_links.txt
+vpk_model.egg-info/requires.txt
+vpk_model.egg-info/top_level.txt

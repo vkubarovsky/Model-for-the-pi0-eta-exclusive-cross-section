@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: vpk-model
+Version: 0.1
+Summary: A package for meson electroproduction calculations and plotting
+Home-page: https://github.com/yourusername/vpk_model
+Author: Valery Kubarovsky
+Author-email: vpk@jlab.org
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Dist: numpy
+Requires-Dist: matplotlib
